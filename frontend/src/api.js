@@ -1,0 +1,162 @@
+/**
+ * API client for Sabzaar Living Walls Research Laboratory
+ */
+
+const API_BASE = "http://127.0.0.1:8000/api";
+
+export async function fetchOverview() {
+  const res = await fetch(`${API_BASE}/overview`);
+  return res.json();
+}
+
+export async function fetchMasterPrompt() {
+  const res = await fetch(`${API_BASE}/master-prompt`);
+  return res.json();
+}
+
+export async function fetchFormulas() {
+  const res = await fetch(`${API_BASE}/formulas`);
+  return res.json();
+}
+
+export async function fetchFormulaDetail(id) {
+  const res = await fetch(`${API_BASE}/formulas/${id}`);
+  return res.json();
+}
+
+export async function validateMassBalance(layer1, layer2) {
+  const res = await fetch(`${API_BASE}/formulas/validate`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ layer_1_ingredients: layer1, layer_2_ingredients: layer2 })
+  });
+  return res.json();
+}
+
+export async function saveFormulaVersion(id, updatedData, notes) {
+  const res = await fetch(`${API_BASE}/formulas/${id}/save-version`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ updated_data: updatedData, notes })
+  });
+  if (!res.ok) {
+    const err = await res.json();
+    throw new Error(err.detail || "Failed to save version");
+  }
+  return res.json();
+}
+
+export async function fetchFormulaHistory(id) {
+  const res = await fetch(`${API_BASE}/formulas/${id}/history`);
+  return res.json();
+}
+
+export async function calculateJobSize(id, areaM2, thicknessMm, wastePct) {
+  const res = await fetch(`${API_BASE}/formulas/${id}/job-quantities`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ area_m2: areaM2, thickness_mm: thicknessMm, waste_pct: wastePct })
+  });
+  return res.json();
+}
+
+export async function fetchScenarios() {
+  const res = await fetch(`${API_BASE}/scenarios`);
+  return res.json();
+}
+
+export async function runSimulation(payload) {
+  const res = await fetch(`${API_BASE}/simulations/run`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload)
+  });
+  return res.json();
+}
+
+export async function fetchProcessStages() {
+  const res = await fetch(`${API_BASE}/processes/stages`);
+  return res.json();
+}
+
+export async function fetchProcessWorkflows() {
+  const res = await fetch(`${API_BASE}/processes/workflows`);
+  return res.json();
+}
+
+export async function compareProcesses(formulaCategory = "FORMULA_A") {
+  const res = await fetch(`${API_BASE}/processes/compare?formula_category=${formulaCategory}`);
+  return res.json();
+}
+
+export async function fetchAgents() {
+  const res = await fetch(`${API_BASE}/agents`);
+  return res.json();
+}
+
+export async function fetchAgentReport(agentId) {
+  const res = await fetch(`${API_BASE}/agents/${agentId}/report`);
+  return res.json();
+}
+
+export async function runAgentsCycle(formulaCategory = "FORMULA_A", apiKey = "") {
+  const res = await fetch(`${API_BASE}/agents/run-cycle`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ formula_category: formulaCategory, api_key: apiKey })
+  });
+  return res.json();
+}
+
+export async function fetchOptimizationWeights() {
+  const res = await fetch(`${API_BASE}/optimization/weights`);
+  return res.json();
+}
+
+export async function runOptimization(weights = null) {
+  const res = await fetch(`${API_BASE}/optimization/compare`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ weights })
+  });
+  return res.json();
+}
+
+export async function fetchFinalDeliverable() {
+  const res = await fetch(`${API_BASE}/reports/final-deliverable`);
+  return res.json();
+}
+
+export async function fetchFinalDeliverableMarkdown() {
+  const res = await fetch(`${API_BASE}/reports/final-deliverable/markdown`);
+  return res.json();
+}
+
+export async function fetchWeatherLocations() {
+  const res = await fetch(`${API_BASE}/weather/locations`);
+  return res.json();
+}
+
+export async function fetchCurrentWeather(locationId = "islamabad_default") {
+  const res = await fetch(`${API_BASE}/weather/current?location_id=${encodeURIComponent(locationId)}`);
+  return res.json();
+}
+
+export async function fetchGeminiStatus() {
+  const res = await fetch(`${API_BASE}/gemini/status`);
+  return res.json();
+}
+
+export async function configureGeminiApiKey(apiKey) {
+  const res = await fetch(`${API_BASE}/gemini/config`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ api_key: apiKey })
+  });
+  return res.json();
+}
+
+export async function fetchScoreAudit() {
+  const res = await fetch(`${API_BASE}/optimization/score-audit`);
+  return res.json();
+}
