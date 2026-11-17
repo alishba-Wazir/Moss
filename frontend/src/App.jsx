@@ -278,17 +278,23 @@ export default function App() {
   }
 
   return (
-    <div style={{ display: "flex", minHeight: "100vh", backgroundColor: "var(--bg-primary)" }}>
+    <div style={{ display: "flex", height: "100vh", overflow: "hidden", backgroundColor: "var(--bg-primary)" }}>
       {/* Sidebar Navigation */}
       <aside
         style={{
           width: "280px",
+          height: "100vh",
+          position: "sticky",
+          top: 0,
+          flexShrink: 0,
           backgroundColor: "var(--bg-secondary)",
           borderRight: "1px solid var(--border-color)",
           display: "flex",
           flexDirection: "column",
           padding: "20px 14px",
-          gap: "8px"
+          gap: "8px",
+          overflowY: "auto",
+          zIndex: 10
         }}
       >
         <div style={{ display: "flex", alignItems: "center", gap: "10px", padding: "10px 12px", marginBottom: "16px" }}>
@@ -375,7 +381,7 @@ export default function App() {
       </aside>
 
       {/* Main Content Area */}
-      <main style={{ flex: 1, padding: "28px 36px", overflowY: "auto" }}>
+      <main style={{ flex: 1, height: "100vh", overflowY: "auto", padding: "28px 36px" }}>
         {/* Global Environmental Location & Gemini Status Header */}
         <div
           style={{
