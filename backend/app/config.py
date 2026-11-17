@@ -10,7 +10,7 @@ class Settings:
     PROJECT_NAME: str = "Sabzaar Moss Wall Research Laboratory"
     API_PREFIX: str = "/api"
     ROOT_DIR: Path = ROOT_DIR
-    DATABASE_PATH: Path = ROOT_DIR / "backend" / "research_lab.db"
+    DATABASE_PATH: Path = Path("/tmp/research_lab.db") if os.getenv("VERCEL") else (ROOT_DIR / "backend" / "research_lab.db")
     INPUTS_DIR: Path = ROOT_DIR / "inputs"
     HTML_BASELINE_FILE: Path = ROOT_DIR / "inputs" / "sabzaar-living-walls-standalone.html"
     
