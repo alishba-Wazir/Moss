@@ -16,7 +16,7 @@ class Settings:
     
     # Gemini API settings
     GEMINI_API_KEY: str = os.getenv("GEMINI_API_KEY", "")
-    GEMINI_MODEL: str = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
+    GEMINI_MODEL: str = os.getenv("GEMINI_MODEL", "gemini-4-argon")
     
     # Defaults
     DEFAULT_TARGET_LOCATION: str = "Islamabad, Pakistan"
@@ -27,8 +27,11 @@ class Settings:
     DEFAULT_COAT_A_WASTE_PCT: float = 15.0
 
     @classmethod
-    def set_gemini_key(cls, key: str):
+    def set_gemini_key(cls, key: str, model: str = None):
         os.environ["GEMINI_API_KEY"] = key.strip()
         settings.GEMINI_API_KEY = key.strip()
+        target_model = model.strip() if model else os.getenv("GEMINI_MODEL", "gemini-4-argon")
+        os.environ["GEMINI_MODEL"] = target_model
+        settings.GEMINI_MODEL = target_model
 
 settings = Settings()

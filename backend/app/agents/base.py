@@ -121,7 +121,7 @@ class BaseSpecialistAgent:
         Invokes genuine Google Gemini API with structured prompt and JSON response schema.
         Never leaks the API key in logs or output.
         """
-        model = os.getenv("GEMINI_MODEL") or settings.GEMINI_MODEL or "gemini-2.5-flash"
+        model = os.getenv("GEMINI_MODEL") or settings.GEMINI_MODEL or "gemini-4-argon"
         url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={api_key}"
         now_iso = datetime.datetime.now(datetime.timezone.utc).isoformat()
         

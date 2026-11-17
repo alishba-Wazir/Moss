@@ -71,6 +71,7 @@ def health_check():
 
 class GeminiConfigRequest(BaseModel):
     api_key: str
+    model: Optional[str] = "gemini-4-argon"
 
 @app.get("/api/gemini/status")
 def get_gemini_status():
@@ -82,19 +83,19 @@ def get_gemini_status():
         "connected": is_connected,
         "model": settings.GEMINI_MODEL,
         "key_preview": key_preview,
-        "message": "Gemini API connected and ready for genuine AI reasoning." if is_connected else "Gemini API disconnected. AI agents will report NOT EXECUTED until an API key is provided."
+        "message": f"Gemini API connected and ready for genuine AI reasoning with model {settings.GEMINI_MODEL}." if is_connected else "Gemini API disconnected. AI agents will report NOT EXECUTED until an API key is provided."
     }
 
 @app.post("/api/gemini/config")
 def configure_gemini_api_key(payload: GeminiConfigRequest):
     if not payload.api_key or len(payload.api_key.strip()) < 5:
         raise HTTPException(status_code=400, detail="Invalid API key provided.")
-    settings.set_gemini_key(payload.api_key.strip())
+    settings.set_gemini_key(payload.api_key.strip(), model=payload.model)
     return {
         "status": "CONNECTED",
         "connected": True,
         "model": settings.GEMINI_MODEL,
-        "message": "Gemini API key successfully configured and saved to backend .env"
+        "message": f"Gemini API key successfully configured for model {settings.GEMINI_MODEL}"
     }
 
 @app.get("/api/overview")

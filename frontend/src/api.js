@@ -151,11 +151,11 @@ export async function fetchGeminiStatus() {
   return res.json();
 }
 
-export async function configureGeminiApiKey(apiKey) {
+export async function configureGeminiApiKey(apiKey, model = "gemini-4-argon") {
   const res = await fetch(`${API_BASE}/gemini/config`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ api_key: apiKey })
+    body: JSON.stringify({ api_key: apiKey, model })
   });
   return res.json();
 }
