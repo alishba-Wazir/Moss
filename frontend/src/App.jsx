@@ -737,11 +737,11 @@ export default function App() {
                   <div className="sz-grid-2" style={{ gap: "20px" }}>
                     <div style={{ backgroundColor: "rgba(255,255,255,0.65)", border: "1px solid var(--sz-glass-border)", padding: "16px", borderRadius: "16px" }}>
                       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" }}>
-                        <span style={{ fontWeight: 700, color: "var(--sz-green-900)" }}>LAYER 1: Desi Mineral Receptor Render</span>
-                        <span className="sz-badge sz-badge--pending">8 mm Nominal</span>
+                        <span style={{ fontWeight: 700, color: "var(--sz-green-900)" }}>LAYER 1: Pneumatic Hopper-Sprayed Desi Render</span>
+                        <span className="sz-badge sz-badge--pending">8 mm Spray</span>
                       </div>
                       <p style={{ fontSize: "0.85rem", color: "var(--sz-text-muted)", marginBottom: "12px", lineHeight: 1.5 }}>
-                        Applied to existing old concrete wall: 36% River Sand + 28% Brick Surkhi + 20% Marble Slurry + 7% Rice Husk Ash + 6% OPC Activator + 1.5% Boosa Straw + 1.5% Starch Binder. Cost: PKR 39.51 / m².
+                        Pneumatic hopper-sprayed directly to existing concrete wall: 36% River Sand + 28% Brick Surkhi + 20% Marble Slurry + 7% Rice Husk Ash + 6% OPC Activator + 1.5% Boosa Straw + 1.5% Starch Binder. Rapid application (100–120 m²/day). Material Cost: PKR 39.51 / m².
                       </p>
                       <ul style={{ fontSize: "0.8rem", color: "var(--sz-text-muted)", paddingLeft: "18px", lineHeight: 1.6 }}>
                         <li>ASTM C1583 Tensile Pull-Off Bond: 0.84 MPa (&ge;0.75 MPa specification)</li>
@@ -753,7 +753,7 @@ export default function App() {
                     <div style={{ backgroundColor: "rgba(255,255,255,0.65)", border: "1px solid var(--sz-glass-border)", padding: "16px", borderRadius: "16px" }}>
                       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" }}>
                         <span style={{ fontWeight: 700, color: "var(--sz-green-700)" }}>LAYER 2: Living Fermented Bio-Gel Spray</span>
-                        <span className="sz-badge sz-badge--success">1.5 L / m² Spray</span>
+                        <span className="sz-badge sz-badge--success">1.2 L / m² Spray</span>
                       </div>
                       <p style={{ fontSize: "0.85rem", color: "var(--sz-text-muted)", marginBottom: "12px", lineHeight: 1.5 }}>
                         Fermented rice starch leachate (0.8 L) + strained sour curd whey (0.2 L, pH 5.2) + 25 g/L wild brick moss fragments (Barbula/Funaria) + 5 g/L starch gel + 2 g/L sifted bio-ash. Cost: PKR 14.64 / m².

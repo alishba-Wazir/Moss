@@ -160,11 +160,11 @@ def generate_final_recommended_report() -> Dict[str, Any]:
             "best_food_waste": "Mixed Food-Waste Biomass Ferment (Formula F: PKR 50.20 / m², 86.12/100)"
         },
         "recommended_process": {
-            "workflow": "Workflow 2: Low-Tech Manual Masonry Plastering & Hopper Spray",
-            "surface_preparation": "Wire-brush and wash existing concrete wall to remove dust and expose aggregate key.",
-            "layer_1_application": "Trowel 2 mm bonding scratch coat firmly against damp concrete, then build up to 7–8 mm. Finish with a rough sponge or wooden float (no steel smoothing).",
+            "workflow": "Dual Spray Workflow: Pneumatic Hopper Spray (Layer 1) & Bio-Gel Spray (Layer 2)",
+            "surface_preparation": "Wire-brush and high-pressure wash existing concrete wall to remove dust and expose aggregate key.",
+            "layer_1_application": "Pneumatic spray using a standard 4-hole mortar hopper gun (at 4–6 bar) in 2 continuous passes to 8 mm nominal thickness. Natural spray texture creates high bioreceptive micro-roughness without trowel pore-sealing. Rebound allowance: ~8–10%.",
             "curing_window": "6–8 days with daily soft water dampening and a day-5 light spray of diluted sour curd whey to neutralize pH to <=8.5.",
-            "layer_2_application": "Spray fermented starch-whey living moss mixture at 1.2 L/m² using a handheld plaster hopper or garden compression sprayer with 4–6 mm tip."
+            "layer_2_application": "Aerosolized low-pressure spray (1.2 L/m²) of fermented starch-whey living moss mixture using a handheld diaphragm or wide-nozzle compression sprayer (4–6 mm tip) directly onto the cured Layer 1."
         },
         "layer_1_full_spec": {
             "batch_size_kg": batch_size_kg,
@@ -175,8 +175,8 @@ def generate_final_recommended_report() -> Dict[str, Any]:
             "mixing_procedure": [
                 "1. Dry blend sand, Surkhi brick dust, marble slurry powder, tandoor ash, and cement (6%) in a trough or drum mixer for 3 minutes.",
                 "2. Sift and disperse boosa straw and cooked starch powder evenly through the dry mix to prevent clumping.",
-                "3. Add 26 L of clean water per 100 kg batch and mix to a buttery, cohesive plaster consistency.",
-                "4. Apply directly onto the pre-wetted existing concrete wall. Do not over-trowel."
+                "3. Add 26–28 L of clean water per 100 kg batch and mix to a sprayable, cohesive mortar slurry.",
+                "4. Load into a pneumatic mortar hopper gun and spray directly onto pre-wetted concrete wall in 2 continuous passes (8 mm total). Do not trowel smooth."
             ]
         },
         "layer_2_full_spec": {
