@@ -516,13 +516,6 @@ export default function App() {
                 <button className="sz-btn sz-btn--ghost sz-btn--icon" title="Notifications">
                   <Bell size={18} color="var(--sz-green-800)" />
                 </button>
-
-                <div style={{ display: "flex", alignItems: "center", gap: "8px", padding: "4px 10px", borderRadius: "20px", background: "rgba(255,255,255,0.6)", border: "1px solid var(--sz-glass-border)" }}>
-                  <div style={{ width: "26px", height: "26px", borderRadius: "50%", background: "#48B86A", color: "#fff", display: "grid", placeItems: "center", fontSize: "12px", fontWeight: 700 }}>
-                    <User size={14} />
-                  </div>
-                  <span style={{ fontSize: "12px", fontWeight: 650, color: "var(--sz-green-950)" }}>Dr. Lead Researcher</span>
-                </div>
               </div>
             </header>
 
