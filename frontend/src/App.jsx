@@ -208,8 +208,8 @@ export default function App() {
     const valid = Math.abs(sum - 100.0) <= 0.05;
     const diff = (sum - 100.0).toFixed(2);
     const msg = valid
-      ? `Mass Balance Verified: 100.00% exact dry mix.`
-      : `Violation: Dry mix sums to ${sum.toFixed(2)}% (${diff > 0 ? "+" : ""}${diff}%). Must equal 100.00% without automatic redistribution.`;
+      ? `Spray Formulation Balance Verified: 100.00% exact spray solids ratio.`
+      : `Violation: Spray formulation sums to ${sum.toFixed(2)}% (${diff > 0 ? "+" : ""}${diff}%). Must equal 100.00% without automatic redistribution.`;
     setMassBalanceStatus({ valid, msg, sum });
   }
 
@@ -807,11 +807,11 @@ Specialist Research Responsibilities:
 6. Water Retention: Penman-Monteith vertical evaporation, internal curing, SAP calcium stability.
 7. Environmental Conditions: Microclimate zoning (Lahore vs Islamabad vs Karachi), summer heatwaves, salinity.
 8. Building Engineering: Concrete rebar corrosion, pull-off bond strength, dead load, fire safety.
-9. Formulation Development: Dry-mix mass balance (strict 100%), Layer 2 g/L liquid ratios, recipe optimization.
+9. Formulation Development: Spray-formulation mass balance (strict 100%), Layer 2 g/L liquid ratios, dual spray workflow optimization.
 10. Scientific Simulation: 48h+ deterministic physics engine, hydrological trajectory, stress scoring.
 11. Multi-Objective Optimization: Pareto frontier, trade-offs between cost, biology, durability, and carbon.
 12. Independent Critical Reviewer: Ruthlessly red-team all claims, expose lack of high-heat trials, prevent failure.
-13. Process Discovery: 14 manufacturing/application stages, pneumatic spray vs manual trowel vs precast panels.
+13. Process Discovery: 14 manufacturing/application stages, pneumatic spray slurry vs living bio-gel spray (zero dry application).
 
 Directive: Collaboration and rigorous scientific debate are mandatory. Highlight disagreements, challenge unverified assumptions, and recommend actionable adjustments.`}
                 rows={25}
@@ -900,7 +900,7 @@ Directive: Collaboration and rigorous scientific debate are mandatory. Highlight
                 <div className="lab-card">
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "12px" }}>
                     <h4 style={{ fontWeight: 700, color: "var(--sz-green-900)" }}>
-                      Layer 1: {formulaDetail.data?.layer_1?.name} (Dry Mix Mass Balance)
+                      Layer 1: {formulaDetail.data?.layer_1?.name} (Pneumatic Spray Slurry Composition)
                     </h4>
                     <span className="badge badge-green">
                       Sum: {formulaDetail.data?.layer_1?.ingredients?.reduce((a, b) => a + (parseFloat(b.percentage) || 0), 0).toFixed(1)}%
@@ -912,7 +912,7 @@ Directive: Collaboration and rigorous scientific debate are mandatory. Highlight
                         <tr>
                           <th>Ingredient</th>
                           <th>Category</th>
-                          <th style={{ textAlign: "right" }}>% Dry Mass</th>
+                          <th style={{ textAlign: "right" }}>% Spray Solids</th>
                           <th>Function & Chemical Role</th>
                           <th style={{ textAlign: "right" }}>PKR / kg</th>
                         </tr>
@@ -984,7 +984,7 @@ Directive: Collaboration and rigorous scientific debate are mandatory. Highlight
                 <span className="badge badge-green">Laboratory Formulation Studio</span>
                 <h2 style={{ fontSize: "1.75rem", fontWeight: 700, marginTop: "6px" }}>Interactive Formula Editor</h2>
                 <p style={{ color: "var(--text-muted)", marginTop: "4px" }}>
-                  Adjust percentages, substitute ingredients, and validate stoichiometry against the dry-mix mass balance.
+                  Adjust percentages, substitute ingredients, and validate stoichiometry against the spray-slurry formulation balance.
                 </p>
               </div>
               <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
@@ -1033,7 +1033,7 @@ Directive: Collaboration and rigorous scientific debate are mandatory. Highlight
                   {massBalanceStatus.valid ? <CheckCircle2 color="#52c41a" size={24} /> : <AlertTriangle color="#f5222d" size={24} />}
                   <div>
                     <h4 style={{ fontWeight: 700, color: massBalanceStatus.valid ? "#73d13d" : "#ff7875" }}>
-                      {massBalanceStatus.valid ? "Dry-Mix Mass Balance Validated" : "Dry-Mix Mass Balance Violation"}
+                      {massBalanceStatus.valid ? "Spray Matrix Formulation Balance Validated" : "Spray Matrix Formulation Balance Violation"}
                     </h4>
                     <p style={{ fontSize: "0.85rem", color: "var(--text-muted)", marginTop: "2px" }}>
                       {massBalanceStatus.msg}
@@ -1067,7 +1067,7 @@ Directive: Collaboration and rigorous scientific debate are mandatory. Highlight
             {/* Editable Layer 1 Table */}
             <div className="lab-card">
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "12px" }}>
-                <h3 style={{ fontSize: "1rem", fontWeight: 600 }}>Layer 1 Ingredients (Dry-Mix)</h3>
+                <h3 style={{ fontSize: "1rem", fontWeight: 600 }}>Layer 1 Ingredients (Pneumatic Spray Slurry)</h3>
                 <button
                   onClick={handleAddL1Ingredient}
                   disabled={formulaDetail?.is_baseline_locked}
@@ -1092,7 +1092,7 @@ Directive: Collaboration and rigorous scientific debate are mandatory. Highlight
                     <tr>
                       <th>Ingredient Name</th>
                       <th>Category</th>
-                      <th style={{ width: "120px" }}>% Dry Mass</th>
+                      <th style={{ width: "120px" }}>% Spray Solids</th>
                       <th>Function</th>
                       <th style={{ width: "100px" }}>PKR / kg</th>
                       <th style={{ width: "70px", textAlign: "center" }}>Action</th>
@@ -1221,7 +1221,7 @@ Directive: Collaboration and rigorous scientific debate are mandatory. Highlight
               {jobCalculation && (
                 <div className="sz-grid-4" style={{ marginTop: "16px" }}>
                   <div style={{ backgroundColor: "var(--bg-secondary)", padding: "12px", borderRadius: "6px" }}>
-                    <span style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>Gross Dry Premix</span>
+                    <span style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>Spray Matrix Solids</span>
                     <div style={{ fontSize: "1.2rem", fontWeight: 700, color: "#36cfc9" }}>
                       {jobCalculation.gross_dry_mass_kg} kg
                     </div>
@@ -2463,15 +2463,15 @@ Directive: Collaboration and rigorous scientific debate are mandatory. Highlight
             {/* Layer 1 100 kg Batch Table */}
             <div className="lab-card">
               <h3 style={{ fontSize: "1.1rem", fontWeight: 600, marginBottom: "12px" }}>
-                Layer 1: Exact 100 kg Dry Premix Batch Specification
+                Layer 1: Pneumatic Wet Mineral Spray Slurry Formulation (Ready-to-Spray Form)
               </h3>
               <div className="sz-table-wrap">
                 <table className="lab-table">
                   <thead>
                     <tr>
                       <th>Ingredient</th>
-                      <th style={{ textAlign: "right" }}>% Dry Mass</th>
-                      <th style={{ textAlign: "right" }}>Grams (100 kg Batch)</th>
+                      <th style={{ textAlign: "right" }}>% Spray Solids</th>
+                      <th style={{ textAlign: "right" }}>Grams in Spray Batch</th>
                       <th>Function & Scientific Justification</th>
                     </tr>
                   </thead>
@@ -2491,15 +2491,15 @@ Directive: Collaboration and rigorous scientific debate are mandatory. Highlight
                   </tbody>
                   <tfoot>
                     <tr style={{ borderTop: "2px solid #52c41a", fontWeight: 700, backgroundColor: "rgba(82, 196, 26, 0.08)" }}>
-                      <td style={{ color: "var(--sz-green-800)" }}>TOTAL DRY BATCH MASS BALANCE</td>
+                      <td style={{ color: "var(--sz-green-800)" }}>TOTAL SPRAY SLURRY FORMULA BALANCE</td>
                       <td style={{ textAlign: "right", fontFamily: "var(--font-mono)", color: "var(--sz-green-800)" }}>
                         100.00%
                       </td>
                       <td style={{ textAlign: "right", fontFamily: "var(--font-mono)", color: "var(--sz-teal-500)" }}>
-                        100,000 g (100.0 kg)
+                        100,000 g (+24 L Water)
                       </td>
                       <td style={{ fontSize: "0.82rem", color: "var(--sz-green-800)" }}>
-                        ✓ Strict 100.00% mass balance verified across all 11 ingredients
+                        ✓ Strict 100.00% formulation balance verified in wet sprayable form (zero dry application)
                       </td>
                     </tr>
                   </tfoot>
@@ -2571,15 +2571,15 @@ Directive: Collaboration and rigorous scientific debate are mandatory. Highlight
                 </div>
 
                 <h4 style={{ fontSize: "0.95rem", fontWeight: 600, marginBottom: "8px" }}>
-                  Cheap & Recyclable Layer 1 Specification (100 kg Dry Batch)
+                  Cheap & Recyclable Layer 1 Specification (Pneumatic Spray Slurry Batch)
                 </h4>
                 <div className="sz-table-wrap" style={{ marginBottom: "16px" }}>
                   <table className="lab-table">
                     <thead>
                       <tr>
                         <th>Ingredient & Source</th>
-                        <th style={{ textAlign: "right" }}>% Dry Mass</th>
-                        <th style={{ textAlign: "right" }}>Grams (100 kg)</th>
+                        <th style={{ textAlign: "right" }}>% Spray Solids</th>
+                        <th style={{ textAlign: "right" }}>Grams in Slurry Batch</th>
                         <th style={{ textAlign: "right" }}>Rate (PKR/kg)</th>
                         <th>Circular Function in Matrix</th>
                       </tr>
@@ -2606,11 +2606,11 @@ Directive: Collaboration and rigorous scientific debate are mandatory. Highlight
                     </tbody>
                     <tfoot>
                       <tr style={{ borderTop: "2px solid #13c2c2", fontWeight: 700, backgroundColor: "rgba(19, 194, 194, 0.08)" }}>
-                        <td style={{ color: "#088080" }}>TOTAL RECYCLABLE DRY BATCH</td>
+                        <td style={{ color: "#088080" }}>TOTAL RECYCLABLE SPRAY SLURRY</td>
                         <td style={{ textAlign: "right", fontFamily: "var(--font-mono)", color: "#088080" }}>100.00%</td>
-                        <td style={{ textAlign: "right", fontFamily: "var(--font-mono)", color: "var(--sz-teal-500)" }}>100,000 g</td>
+                        <td style={{ textAlign: "right", fontFamily: "var(--font-mono)", color: "var(--sz-teal-500)" }}>100,000 g (+Water)</td>
                         <td style={{ textAlign: "right", fontFamily: "var(--font-mono)", color: "#ad6800" }}>~PKR 9.50/kg</td>
-                        <td style={{ fontSize: "0.82rem", color: "#088080" }}>✓ Strict 100.00% mass balance verified</td>
+                        <td style={{ fontSize: "0.82rem", color: "#088080" }}>✓ Strict 100.00% formulation balance verified (spray form)</td>
                       </tr>
                     </tfoot>
                   </table>
@@ -2659,18 +2659,18 @@ Directive: Collaboration and rigorous scientific debate are mandatory. Highlight
               </div>
               <div className="sz-grid-4">
                 <div style={{ backgroundColor: "var(--bg-secondary)", padding: "14px", borderRadius: "8px" }}>
-                  <span style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>Layer 1 Pneumatic Spray Skin</span>
+                  <span style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>Layer 1 Pneumatic Spray Slurry</span>
                   <div style={{ fontSize: "1.2rem", fontWeight: 700, color: "#ffc53d", marginTop: "4px" }}>
                     PKR {finalReport.cost_analysis?.layer_1_materials_pkr_m2 || 18.37} / m²
                   </div>
-                  <div style={{ fontSize: "0.7rem", color: "var(--text-muted)", marginTop: "2px" }}>7.0 kg dry mix @ 5.5mm</div>
+                  <div style={{ fontSize: "0.7rem", color: "var(--text-muted)", marginTop: "2px" }}>8.7 L wet spray slurry @ 5.5mm</div>
                 </div>
                 <div style={{ backgroundColor: "var(--bg-secondary)", padding: "14px", borderRadius: "8px" }}>
-                  <span style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>Layer 2 Starch-Whey Spray</span>
+                  <span style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>Layer 2 Living Bio-Gel Spray</span>
                   <div style={{ fontSize: "1.2rem", fontWeight: 700, color: "#36cfc9", marginTop: "4px" }}>
                     PKR {finalReport.cost_analysis?.layer_2_materials_pkr_m2 || 6.25} / m²
                   </div>
-                  <div style={{ fontSize: "0.7rem", color: "var(--text-muted)", marginTop: "2px" }}>1.0 L/m² bio-gel spray</div>
+                  <div style={{ fontSize: "0.7rem", color: "var(--text-muted)", marginTop: "2px" }}>1.0 L/m² liquid spray</div>
                 </div>
                 <div style={{ backgroundColor: "var(--bg-secondary)", padding: "14px", borderRadius: "8px" }}>
                   <span style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>Total Raw Materials (BOM)</span>

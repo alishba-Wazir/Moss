@@ -828,22 +828,28 @@ ALL_FORMULA_CATEGORIES: Dict[str, Dict[str, Any]] = {
     },
     "FORMULA_E": {
         "code": "FORMULA-E",
-        "name": "Sabzaar Desi Eco-Matrix (Target: PKR 25 / m²)",
+        "name": "Sabzaar Desi Eco-Matrix (Target: PKR 25 / m² — 100% Dual Spray Form)",
         "status": "DISCOVERY_CANDIDATE",
-        "category": "Ultra-Low-Cost Recycled Desi Matrix",
-        "description": "Engineered specifically for existing concrete walls using 100% regional Pakistani recycled materials (Surkhi, river sand, marble slurry, boosa straw, and fermented starch-whey spray). Zero expensive chemicals.",
+        "category": "Ultra-Low-Cost Recycled Desi Matrix (Dual Spray)",
+        "description": "Engineered specifically for existing concrete walls using 100% regional Pakistani recycled materials applied entirely in SPRAY FORM (Layer 1 Pneumatic Mineral Spray Slurry + Layer 2 Living Bio-Gel Liquid Spray). Zero dry powder application, zero manual troweling.",
         "layer_1": {
-            "name": "Desi Recycled Concrete-Retrofit Coat",
+            "name": "Pneumatic Bioreceptive Mineral Spray Slurry (Wet Slurry Form)",
+            "form": "Pneumatic Wet Spray Slurry",
+            "application_method": "4-hole pneumatic mortar hopper spray gun (4–6 bar)",
+            "nominal_thickness_mm": 5.5,
+            "wet_spray_slurry_rate_l_m2": 8.7,
             "ingredients": FORMULA_E_LAYER_1,
             "mass_balance_sum_pct": sum(item["percentage"] for item in FORMULA_E_LAYER_1),
             "estimated_initial_ph": 11.0,
-            "wait_days_to_spray": 10
+            "wait_days_to_spray": 7
         },
         "layer_2": {
-            "name": "Fermented Starch-Whey Desi Moss Spray",
+            "name": "Fermented Starch-Whey Living Moss Bio-Gel Spray (Liquid Form)",
+            "form": "Living Bio-Gel Liquid Spray",
+            "application_method": "Wide-orifice pressure compression spray gun (4–6 mm tip)",
             "ingredients": FORMULA_E_LAYER_2,
-            "spray_rate_l_m2": 1.2,
-            "moss_density_g_m2": 30.0
+            "spray_rate_l_m2": 1.0,
+            "moss_density_g_m2": 20.0
         }
     },
     "FORMULA_F": {
