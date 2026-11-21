@@ -195,3 +195,33 @@ export async function generateLivePaper(formulaCategory = "FORMULA_E") {
   }
   return res.json();
 }
+
+export async function fetchDualSprayBaseline() {
+  const res = await fetch(`${API_BASE}/dual-spray/baseline`);
+  return res.json();
+}
+
+export async function fetchDualSprayAudit(params = {}) {
+  const query = new URLSearchParams(params).toString();
+  const res = await fetch(`${API_BASE}/dual-spray/mass-volume-audit${query ? `?${query}` : ''}`);
+  return res.json();
+}
+
+export async function runDualSpraySimulation(params = {}) {
+  const res = await fetch(`${API_BASE}/dual-spray/simulate`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(params)
+  });
+  return res.json();
+}
+
+export async function fetchDualSprayExperiments() {
+  const res = await fetch(`${API_BASE}/dual-spray/experiments`);
+  return res.json();
+}
+
+export async function fetchDualSprayDashboard() {
+  const res = await fetch(`${API_BASE}/dual-spray/comparison-dashboard`);
+  return res.json();
+}

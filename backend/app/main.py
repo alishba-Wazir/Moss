@@ -536,6 +536,109 @@ class CustomWeightsRequest(BaseModel):
 def run_optimization(payload: CustomWeightsRequest):
     return run_multi_objective_comparison(payload.weights)
 
+# ==================== DUAL-SPRAY COMPREHENSIVE SIMULATION SUITE ====================
+from .simulation.mass_volume_auditor import audit_dual_spray_mass_volume
+from .simulation.layer1_mineral_spray import simulate_layer1_mineral_spray
+from .simulation.layer2_bio_gel import simulate_layer2_bio_gel
+from .simulation.combined_system import simulate_combined_dual_spray_system
+from .simulation.dual_spray_orchestrator import run_full_dual_spray_simulation, get_experimental_alternatives_and_scenarios
+
+class DualSpraySimulateRequest(BaseModel):
+    spray_pressure_bar: float = 5.0
+    nozzle_diameter_mm: float = 6.0
+    water_ratio_l_per_100kg: float = 24.0
+    nominal_thickness_mm: float = 5.5
+    bio_spray_nozzle_mm: float = 5.0
+    misting_frequency_per_day: int = 2
+    ambient_temp_c: float = 32.0
+    ambient_rh_pct: float = 45.0
+    storage_hours_before_spray: float = 4.0
+
+@app.get("/api/dual-spray/baseline")
+def get_dual_spray_baseline():
+    """Returns the immutable baseline specification for Layer 1 and Layer 2 dual spray."""
+    return {
+        "title": "Dual-Spray Living Wall Immutable Baseline (V1)",
+        "layer_1_mineral_spray": {
+            "name": "Bioreceptive Mineral Spray Slurry",
+            "form": "Pneumatic Wet Spray Slurry (Zero Dry Application)",
+            "ingredients": [
+                {"name": "River Sand", "percentage": 38.0, "role": "Inert skeleton"},
+                {"name": "Recycled Brick Surkhi", "percentage": 30.0, "role": "Ceramic water reservoir"},
+                {"name": "Marble Slurry Powder", "percentage": 16.0, "role": "Micro-filler"},
+                {"name": "Rice Husk / Tandoor Ash", "percentage": 10.0, "role": "Reactive pozzolan"},
+                {"name": "Ordinary Portland Cement (OPC)", "percentage": 4.0, "role": "Hydraulic activator"},
+                {"name": "Boosa Straw (5–10 mm)", "percentage": 1.0, "role": "Fiber reinforcement"},
+                {"name": "Cooked Starch Binder", "percentage": 1.0, "role": "Anti-sag thixotropic binder"}
+            ],
+            "water_ratio": "24 L per 100 kg dry solids",
+            "application_rate": "7 kg dry solids / m²",
+            "claimed_wet_slurry_volume": "8.7 L / m²",
+            "claimed_nominal_thickness": "5.5 mm",
+            "pneumatic_pressure": "4–6 bar"
+        },
+        "layer_2_living_bio_gel": {
+            "name": "Living Moss Bio-Gel Spray",
+            "form": "Aerosolized Liquid Bio-Inoculant",
+            "ingredients": [
+                {"name": "Leftover Rice Starch Water", "amount": "0.82 L", "role": "Carbohydrate liquid carrier"},
+                {"name": "Strained Sour Curd Whey", "amount": "0.18 L", "role": "Natural lactic acid buffer & tackifier"},
+                {"name": "Living Wild Brick Moss Fragments", "amount": "20.0 g", "role": "Biological bryophyte propagules"},
+                {"name": "Boiled Starch Slurry Gel", "amount": "5.0 g", "role": "Viscous suspension gel"},
+                {"name": "Sifted Wood Ash", "amount": "2.0 g", "role": "Mineral electrolyte donor"}
+            ],
+            "spray_rate": "1.0 L / m²",
+            "spray_nozzle": "4–6 mm wide-orifice tip"
+        }
+    }
+
+@app.get("/api/dual-spray/mass-volume-audit")
+def get_dual_spray_audit(
+    dry_solids: float = 7.0,
+    claimed_slurry_l: float = 8.7,
+    thickness_mm: float = 5.5,
+    water_l_100kg: float = 24.0
+):
+    """Executes stoichiometric and volumetric consistency audit, flagging any physical discrepancies."""
+    return audit_dual_spray_mass_volume(
+        dry_solids_kg_m2=dry_solids,
+        claimed_wet_slurry_l_m2=claimed_slurry_l,
+        claimed_nominal_thickness_mm=thickness_mm,
+        water_liters_per_100kg_dry=water_l_100kg
+    )
+
+@app.post("/api/dual-spray/simulate")
+def run_dual_spray_simulation_endpoint(payload: DualSpraySimulateRequest):
+    """Executes complete 13-agent deterministic multi-physics simulation."""
+    return run_full_dual_spray_simulation(
+        spray_pressure_bar=payload.spray_pressure_bar,
+        nozzle_diameter_mm=payload.nozzle_diameter_mm,
+        water_ratio_l_per_100kg=payload.water_ratio_l_per_100kg,
+        nominal_thickness_mm=payload.nominal_thickness_mm,
+        bio_spray_nozzle_mm=payload.bio_spray_nozzle_mm,
+        misting_frequency_per_day=payload.misting_frequency_per_day,
+        ambient_temp_c=payload.ambient_temp_c,
+        ambient_rh_pct=payload.ambient_rh_pct,
+        storage_hours_before_spray=payload.storage_hours_before_spray
+    )
+
+@app.get("/api/dual-spray/experiments")
+def get_dual_spray_experiments():
+    """Returns versioned alternatives, scenario matrix, and sensitivity sweeps."""
+    return get_experimental_alternatives_and_scenarios()
+
+@app.get("/api/dual-spray/comparison-dashboard")
+def get_dual_spray_dashboard():
+    """Aggregates all components for one-click comprehensive dashboard visualization."""
+    audit = audit_dual_spray_mass_volume(7.0, 8.7, 5.5, 24.0)
+    sim = run_full_dual_spray_simulation(5.0, 6.0, 24.0, 5.5, 5.0, 2, 32.0, 45.0, 4.0)
+    experiments = get_experimental_alternatives_and_scenarios()
+    return {
+        "audit": audit,
+        "simulation": sim,
+        "experiments": experiments
+    }
+
 # ==================== FINAL DELIVERABLE & REPORTS ====================
 
 @app.get("/api/reports/final-deliverable")

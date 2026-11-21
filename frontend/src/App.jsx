@@ -28,6 +28,7 @@ import {
 } from "lucide-react";
 
 import * as api from "./api";
+import DualSprayDashboard from "./DualSprayDashboard";
 
 export default function App() {
   const [activeTab, setActiveTab] = useState("overview");
@@ -442,6 +443,7 @@ export default function App() {
           <nav className="sz-nav">
             {[
               { id: "overview", label: "Research Overview", icon: Activity },
+              { id: "dual_spray", label: "Dual-Spray Simulation Suite", icon: Droplets },
               { id: "prompt", label: "Master Research Prompt", icon: Compass },
               { id: "discovery", label: "Formula Discovery (A-F)", icon: Layers },
               { id: "editor", label: "Interactive Formula Editor", icon: Sliders },
@@ -769,7 +771,10 @@ export default function App() {
               </div>
             )}
 
-        {/* TAB 2: MASTER RESEARCH PROMPT */}
+        {/* TAB 2: DUAL-SPRAY COMPREHENSIVE SIMULATION SUITE */}
+        {activeTab === "dual_spray" && <DualSprayDashboard />}
+
+        {/* TAB 3: MASTER RESEARCH PROMPT */}
         {activeTab === "prompt" && (
           <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
             <div>
