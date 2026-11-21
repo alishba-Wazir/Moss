@@ -112,6 +112,12 @@ def init_db():
             INSERT INTO formula_versions (formula_id, version, notes, data_json)
             VALUES (?, 1, 'Initial seeded formulation', ?)
             """, (code.lower(), json.dumps(fdata)))
+        elif not is_baseline:
+            c.execute("""
+            UPDATE formulas 
+            SET name = ?, category = ?, status = ?, data_json = ?, updated_at = CURRENT_TIMESTAMP
+            WHERE id = ? OR code = ?
+            """, (fdata["name"], fdata.get("category", "Uncategorized"), fdata.get("status", "ACTIVE"), json.dumps(fdata), code.lower(), code))
         
     conn.commit()
     conn.close()

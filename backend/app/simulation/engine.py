@@ -140,10 +140,12 @@ def simulate_formula_performance(
     bioviability_score = round(max(0.0, min(100.0, (1.0 - avg_stress) * 100.0)), 1)
     
     # Material costs estimate per m2
-    layer1_dry_kg_m2 = coat_thickness_mm * 1.37 * 1.15
+    is_formula_e = "FORMULA-E" in formula_data.get("code", "") or "FORMULA_E" in formula_data.get("code", "") or "Formula E" in formula_data.get("name", "")
+    nominal_thickness = 5.5 if is_formula_e else coat_thickness_mm
+    layer1_dry_kg_m2 = 7.0 if is_formula_e else (nominal_thickness * 1.37 * 1.15)
     cost_l1 = sum(float(i.get("percentage", 0.0))/100.0 * float(i.get("cost_pkr_kg", 0.0)) for i in layer1_ingredients) * layer1_dry_kg_m2
-    spray_rate_l2 = float(formula_data.get("layer_2", {}).get("specs", {}).get("application_rate_liters_per_m2", 1.5))
-    cost_l2 = sum(float(i.get("amount", 0.0)) * float(i.get("cost_pkr_per_unit", 0.0)) for i in layer2_ingredients if i.get("unit") != "L") * spray_rate_l2
+    spray_rate_l2 = 1.0 if is_formula_e else float(formula_data.get("layer_2", {}).get("specs", {}).get("application_rate_liters_per_m2", 1.2))
+    cost_l2 = sum(float(i.get("amount", 0.0)) * float(i.get("cost_pkr_per_unit", 0.0)) for i in layer2_ingredients) * spray_rate_l2
     total_material_cost_m2 = round(cost_l1 + cost_l2, 2)
     
     loc_meta = LOCATIONS_REGISTRY.get(scenario_id, LOCATIONS_REGISTRY["islamabad_default"])

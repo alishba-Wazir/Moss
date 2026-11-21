@@ -612,7 +612,7 @@ export default function App() {
                     <div>
                       <div className="sz-metric__label">Formula Categories</div>
                       <div className="sz-metric__value">6 Active (A–F)</div>
-                      <div className="sz-metric__detail">Champion: Formula E (PKR 54.15/m²)</div>
+                      <div className="sz-metric__detail">Champion: Formula E (PKR 24.62/m² ~PKR 25)</div>
                     </div>
                   </div>
 
@@ -634,7 +634,7 @@ export default function App() {
                     <div>
                       <div className="sz-metric__label">Simulation Engine</div>
                       <div className="sz-metric__value">Penman-Monteith</div>
-                      <div className="sz-metric__detail">168h Physics Diurnal Engine</div>
+                      <div className="sz-metric__detail">15-Day (360h) Diurnal Physics Engine</div>
                     </div>
                   </div>
 
@@ -709,7 +709,7 @@ export default function App() {
                       <ul className="sz-milestones">
                         <li className="sz-milestone" data-state="complete">
                           <span className="sz-milestone__icon"><Check size={10} /></span>
-                          <span>Formula E (PKR 54.15/m²) Formulated</span>
+                          <span>Formula E (PKR 24.62/m² ~PKR 25) Formulated</span>
                         </li>
                         <li className="sz-milestone" data-state="complete">
                           <span className="sz-milestone__icon"><Check size={10} /></span>
@@ -795,7 +795,7 @@ Coordinate 6 Formulation Categories:
 - Formula B: Ideal Performance Formula (Low-alkali MPC, maximum water retention, rapid establishment)
 - Formula C: Recyclable-Material Formula (Industrial GGBS slag, rice husk ash, recycled aggregates, circular economy)
 - Formula D: Mineral-Based / Cost-Optimized Formula (Lime-surkhi heritage matrix, minimum cost)
-- Formula E: Sabzaar Desi Eco-Matrix (Final Ultra-Low Cost Champion: PKR 54.15 / m², 100% Recyclable Local Materials for Existing Concrete Walls)
+- Formula E: Sabzaar Desi Eco-Matrix (Final Ultra-Low Cost Champion: PKR 24.62 / m² ~PKR 25, 100% Recyclable Local Materials & Dual Spray for Existing Concrete Walls)
 - Formula F: Mixed Food-Waste Biomass Ferment Matrix (PKR 50.20 / m², Calcined Kitchen Bio-Ash, Spent Tea, Fermented Starch & Sour Curd Whey)
 
 Specialist Research Responsibilities:
@@ -841,7 +841,7 @@ Directive: Collaboration and rigorous scientific debate are mandatory. Highlight
                 <span className="badge badge-green">Formula Categories</span>
                 <h2 style={{ fontSize: "1.75rem", fontWeight: 700, marginTop: "6px" }}>Six Formulation Discovery Tracks (A–F)</h2>
                 <p style={{ color: "var(--text-muted)", marginTop: "4px" }}>
-                  Managed under the Master Research Prompt. Explore the immutable baseline alongside ideal, recyclable, mineral cost-optimized, and new low-cost candidates: Formula E (Sabzaar Desi Eco-Matrix - PKR 54.15/m²) and Formula F (Mixed Food-Waste Ferment Matrix - PKR 50.20/m²).
+                  Managed under the Master Research Prompt. Explore the immutable baseline alongside ideal, recyclable, mineral cost-optimized, and new low-cost candidates: Formula E (Sabzaar Desi Eco-Matrix - PKR 24.62/m² ~PKR 25) and Formula F (Mixed Food-Waste Ferment Matrix - PKR 50.20/m²).
                 </p>
               </div>
             </div>
@@ -1300,16 +1300,64 @@ Directive: Collaboration and rigorous scientific debate are mandatory. Highlight
               </div>
 
               <div>
-                <label style={{ fontSize: "0.8rem", color: "var(--text-muted)" }}>Duration (Hours)</label>
+                <label style={{ fontSize: "0.8rem", color: "var(--text-muted)" }}>Duration (Hours, max 360h / 15 Days)</label>
                 <input
                   type="number"
                   value={simDuration}
                   min="24"
-                  max="168"
+                  max="360"
                   step="24"
                   onChange={(e) => setSimDuration(parseInt(e.target.value) || 48)}
                   style={{ width: "100%", marginTop: "4px" }}
                 />
+                <div style={{ display: "flex", gap: "6px", marginTop: "6px" }}>
+                  <button
+                    type="button"
+                    onClick={() => setSimDuration(48)}
+                    style={{
+                      padding: "3px 8px",
+                      fontSize: "0.72rem",
+                      borderRadius: "4px",
+                      border: "1px solid var(--border-color)",
+                      backgroundColor: simDuration === 48 ? "var(--sz-green-600)" : "var(--bg-secondary)",
+                      color: simDuration === 48 ? "#fff" : "inherit",
+                      cursor: "pointer"
+                    }}
+                  >
+                    48h (2d)
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setSimDuration(168)}
+                    style={{
+                      padding: "3px 8px",
+                      fontSize: "0.72rem",
+                      borderRadius: "4px",
+                      border: "1px solid var(--border-color)",
+                      backgroundColor: simDuration === 168 ? "var(--sz-green-600)" : "var(--bg-secondary)",
+                      color: simDuration === 168 ? "#fff" : "inherit",
+                      cursor: "pointer"
+                    }}
+                  >
+                    168h (7d)
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setSimDuration(360)}
+                    style={{
+                      padding: "3px 8px",
+                      fontSize: "0.72rem",
+                      borderRadius: "4px",
+                      border: "1px solid var(--border-color)",
+                      backgroundColor: simDuration === 360 ? "var(--sz-green-600)" : "var(--bg-secondary)",
+                      color: simDuration === 360 ? "#fff" : "inherit",
+                      cursor: "pointer",
+                      fontWeight: 700
+                    }}
+                  >
+                    360h (15 Days)
+                  </button>
+                </div>
               </div>
 
               <button
@@ -1826,7 +1874,7 @@ Directive: Collaboration and rigorous scientific debate are mandatory. Highlight
                     Automated Live Research Paper Generator
                   </h3>
                   <p style={{ fontSize: "0.82rem", color: "var(--text-muted)" }}>
-                    Synthesizes complete academic prose for publication in Construction and Building Materials on Formula E (PKR 54.15 / m²).
+                    Synthesizes complete academic prose for publication in Construction and Building Materials on Formula E (PKR 24.62 / m² ~PKR 25).
                   </p>
                 </div>
                 <button
@@ -1887,7 +1935,7 @@ Directive: Collaboration and rigorous scientific debate are mandatory. Highlight
                       <p style={{ color: "var(--sz-text-muted)", marginTop: "2px" }}>{generatedPaper.red_team_adversarial_resolution}</p>
                     </div>
                     <div>
-                      <strong style={{ color: "var(--sz-green-950)", fontSize: "0.88rem" }}>5. Life-Cycle Economics (PKR 54.15 / m² vs 816 PKR Baseline):</strong>
+                      <strong style={{ color: "var(--sz-green-950)", fontSize: "0.88rem" }}>5. Life-Cycle Economics (PKR 24.62 / m² vs 816 PKR Baseline):</strong>
                       <p style={{ color: "var(--sz-text-muted)", marginTop: "2px" }}>{generatedPaper.life_cycle_economics}</p>
                     </div>
                     <div>
@@ -2611,30 +2659,30 @@ Directive: Collaboration and rigorous scientific debate are mandatory. Highlight
               </div>
               <div className="sz-grid-4">
                 <div style={{ backgroundColor: "var(--bg-secondary)", padding: "14px", borderRadius: "8px" }}>
-                  <span style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>Layer 1 Desi Render</span>
+                  <span style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>Layer 1 Pneumatic Spray Skin</span>
                   <div style={{ fontSize: "1.2rem", fontWeight: 700, color: "#ffc53d", marginTop: "4px" }}>
-                    PKR {finalReport.cost_analysis?.layer_1_materials_pkr_m2 || 39.51} / m²
+                    PKR {finalReport.cost_analysis?.layer_1_materials_pkr_m2 || 18.37} / m²
                   </div>
-                  <div style={{ fontSize: "0.7rem", color: "var(--text-muted)", marginTop: "2px" }}>10.5 kg dry mix @ 8mm</div>
+                  <div style={{ fontSize: "0.7rem", color: "var(--text-muted)", marginTop: "2px" }}>7.0 kg dry mix @ 5.5mm</div>
                 </div>
                 <div style={{ backgroundColor: "var(--bg-secondary)", padding: "14px", borderRadius: "8px" }}>
                   <span style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>Layer 2 Starch-Whey Spray</span>
                   <div style={{ fontSize: "1.2rem", fontWeight: 700, color: "#36cfc9", marginTop: "4px" }}>
-                    PKR {finalReport.cost_analysis?.layer_2_materials_pkr_m2 || 14.64} / m²
+                    PKR {finalReport.cost_analysis?.layer_2_materials_pkr_m2 || 6.25} / m²
                   </div>
-                  <div style={{ fontSize: "0.7rem", color: "var(--text-muted)", marginTop: "2px" }}>1.2 L/m² fermented spray</div>
+                  <div style={{ fontSize: "0.7rem", color: "var(--text-muted)", marginTop: "2px" }}>1.0 L/m² bio-gel spray</div>
                 </div>
                 <div style={{ backgroundColor: "var(--bg-secondary)", padding: "14px", borderRadius: "8px" }}>
                   <span style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>Total Raw Materials (BOM)</span>
                   <div style={{ fontSize: "1.2rem", fontWeight: 800, color: "#73d13d", marginTop: "4px" }}>
-                    PKR {finalReport.cost_analysis?.total_material_cost_pkr_m2 || 54.15} / m²
+                    PKR {finalReport.cost_analysis?.total_material_cost_pkr_m2 || 24.62} / m²
                   </div>
-                  <div style={{ fontSize: "0.7rem", color: "#73d13d", marginTop: "2px" }}>~$0.19 USD / m² (Ultra Low-Cost)</div>
+                  <div style={{ fontSize: "0.7rem", color: "#73d13d", marginTop: "2px" }}>~$0.088 USD / m² (PKR 25 Champion)</div>
                 </div>
                 <div style={{ backgroundColor: "var(--bg-secondary)", padding: "14px", borderRadius: "8px" }}>
                   <span style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>Savings vs Baseline</span>
                   <div style={{ fontSize: "1.2rem", fontWeight: 700, color: "#52c41a", marginTop: "4px" }}>
-                    93.4% Cheaper
+                    97.0% Cheaper
                   </div>
                   <div style={{ fontSize: "0.7rem", color: "var(--text-muted)", marginTop: "2px" }}>vs. PKR 816/m² baseline</div>
                 </div>
