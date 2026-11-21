@@ -22,11 +22,13 @@ SABZAAR LIVING WALLS: MASTER MULTI-AGENT RESEARCH & DISCOVERY PROMPT
 Goal: Rigorously discover, characterize, simulate, and optimize a complete two-layer bioreceptive living wall system for harsh subtropical urban environments.
 Primary Benchmark Location: ISLAMABAD, PAKISTAN (Station 415710, 540m elev, 1,261–1,904mm rain, Cwa).
 
-Coordinate 4 Formulation Categories:
+Coordinate 6 Formulation Categories:
 - Formula A: Original HTML / Idea-Based Formula (Immutable Reference Baseline)
 - Formula B: Ideal Performance Formula (Low-alkali MPC, maximum water retention, rapid establishment)
 - Formula C: Recyclable-Material Formula (Industrial GGBS slag, rice husk ash, recycled aggregates, circular economy)
 - Formula D: Mineral-Based / Cost-Optimized Formula (Lime-surkhi heritage matrix, minimum cost)
+- Formula E: Sabzaar Desi Eco-Matrix (Final Ultra-Low Cost Champion: PKR 54.15 / m², 100% Recyclable Local Materials for Existing Concrete Walls)
+- Formula F: Mixed Food-Waste Biomass Ferment Matrix (PKR 50.20 / m², Calcined Kitchen Bio-Ash, Spent Tea, Fermented Starch & Sour Curd Whey)
 
 Specialist Research Responsibilities:
 1. Literature Research: Verify patent claims (WO2021172992A1 / EP4110743A1) and empirical peer-reviewed evidence.
@@ -118,13 +120,24 @@ class MasterOrchestrator:
             "pakistan_climate_focus": True
         }
         
-        # Phase 1: Execute 12 primary specialists via genuine Gemini API calls
+        # Phase 1: Execute 12 primary specialists via genuine Gemini API calls with concurrency control
         reports: Dict[str, Any] = {}
         primary_agent_ids = [aid for aid in self.agents if aid != "agent_reviewer"]
-        tasks = [self.agents[aid].execute(context, api_key=active_key) for aid in primary_agent_ids]
-        
+        sem = asyncio.Semaphore(2)
+
+        async def run_agent_guarded(agent_id: str):
+            async with sem:
+                res = await self.agents[agent_id].execute(context, api_key=active_key)
+                await asyncio.sleep(0.5)
+                return agent_id, res
+
+        tasks = [run_agent_guarded(aid) for aid in primary_agent_ids]
         results = await asyncio.gather(*tasks, return_exceptions=True)
-        for aid, res in zip(primary_agent_ids, results):
+        for item in results:
+            if isinstance(item, Exception):
+                logger.error(f"Agent execution encountered exception: {item}")
+                continue
+            aid, res = item
             if isinstance(res, Exception):
                 logger.error(f"Agent {aid} threw an exception: {res}")
                 reports[aid] = {
@@ -219,5 +232,26 @@ class MasterOrchestrator:
         self.execution_history.append(summary_payload)
         self.is_running = False
         return summary_payload
+
+    def load_latest_cycle(self) -> Optional[Dict[str, Any]]:
+        """Restores the most recent cycle and agent reports from SQLite storage."""
+        try:
+            conn = get_connection()
+            c = conn.cursor()
+            c.execute("SELECT summary_json FROM agent_cycles ORDER BY created_at DESC LIMIT 1")
+            row = c.fetchone()
+            conn.close()
+            if row:
+                import json
+                cycle = json.loads(row[0])
+                reports = cycle.get("agent_reports", {})
+                for aid, r in reports.items():
+                    if aid in self.agents and isinstance(r, dict):
+                        self.agents[aid].status = r.get("status", "COMPLETED")
+                        self.agents[aid].last_report = r
+                return cycle
+        except Exception as e:
+            logger.warning(f"Could not load latest cycle from DB: {e}")
+        return None
 
 master_orchestrator = MasterOrchestrator()

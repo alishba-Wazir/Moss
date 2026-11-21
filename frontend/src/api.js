@@ -164,3 +164,34 @@ export async function fetchScoreAudit() {
   const res = await fetch(`${API_BASE}/optimization/score-audit`);
   return res.json();
 }
+
+export async function fetchLatestAgentCycle() {
+  const res = await fetch(`${API_BASE}/agents/latest-cycle`);
+  return res.json();
+}
+
+export async function scanWasteMaterial(materialName, originContext = "Pakistan industrial or agricultural byproduct") {
+  const res = await fetch(`${API_BASE}/agents/scan-waste-material`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ material_name: materialName, origin_context: originContext })
+  });
+  if (!res.ok) {
+    const err = await res.json();
+    throw new Error(err.detail || "Failed to scan waste material");
+  }
+  return res.json();
+}
+
+export async function generateLivePaper(formulaCategory = "FORMULA_E") {
+  const res = await fetch(`${API_BASE}/reports/generate-live-paper`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ formula_category: formulaCategory })
+  });
+  if (!res.ok) {
+    const err = await res.json();
+    throw new Error(err.detail || "Failed to generate research paper");
+  }
+  return res.json();
+}

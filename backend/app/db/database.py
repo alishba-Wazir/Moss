@@ -90,11 +90,11 @@ def init_db():
     
     conn.commit()
     
-    # Seed the 4 initial formula categories if empty
-    c.execute("SELECT COUNT(*) as count FROM formulas")
-    if c.fetchone()["count"] == 0:
-        for code, fdata in ALL_FORMULA_CATEGORIES.items():
-            is_baseline = (code == "FORMULA_A")
+    # Seed or synchronize all formula categories
+    for code, fdata in ALL_FORMULA_CATEGORIES.items():
+        is_baseline = (code == "FORMULA_A")
+        c.execute("SELECT id FROM formulas WHERE id = ? OR code = ?", (code.lower(), code))
+        if not c.fetchone():
             c.execute("""
             INSERT INTO formulas (id, code, name, category, status, is_baseline_locked, version, data_json)
             VALUES (?, ?, ?, ?, ?, ?, 1, ?)
@@ -112,9 +112,8 @@ def init_db():
             INSERT INTO formula_versions (formula_id, version, notes, data_json)
             VALUES (?, 1, 'Initial seeded formulation', ?)
             """, (code.lower(), json.dumps(fdata)))
-            
-        conn.commit()
         
+    conn.commit()
     conn.close()
 
 # Database helper functions

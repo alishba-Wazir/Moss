@@ -121,8 +121,12 @@ class BaseSpecialistAgent:
         Invokes genuine Google Gemini API with structured prompt and JSON response schema.
         Never leaks the API key in logs or output.
         """
-        model = os.getenv("GEMINI_MODEL") or settings.GEMINI_MODEL or "gemini-4-argon"
-        url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={api_key}"
+        primary_model = os.getenv("GEMINI_MODEL") or settings.GEMINI_MODEL or "gemini-flash-lite-latest"
+        models_to_try = [primary_model]
+        for fallback in ["gemini-flash-lite-latest", "gemini-flash-latest", "gemini-2.5-flash-lite"]:
+            if fallback not in models_to_try:
+                models_to_try.append(fallback)
+        
         now_iso = datetime.datetime.now(datetime.timezone.utc).isoformat()
         
         prompt_payload = {
@@ -162,38 +166,56 @@ class BaseSpecialistAgent:
             }
         }
         
-        async with httpx.AsyncClient(timeout=30.0) as client:
-            resp = await client.post(url, json=request_body)
+        async with httpx.AsyncClient(timeout=60.0) as client:
+            last_err = ""
+            for active_model in models_to_try:
+                url = f"https://generativelanguage.googleapis.com/v1beta/models/{active_model}:generateContent?key={api_key}"
+                for attempt in range(3):
+                    try:
+                        resp = await client.post(url, json=request_body)
+                        if resp.status_code == 200:
+                            data = resp.json()
+                            candidate_text = data["candidates"][0]["content"]["parts"][0]["text"]
+                            parsed = extract_json_from_llm_text(candidate_text)
+                            parsed["agent_id"] = self.agent_id
+                            parsed["agent_name"] = self.name
+                            parsed["status"] = "COMPLETED"
+                            parsed["gemini_connected"] = True
+                            parsed["execution_mode"] = "GEMINI_API"
+                            parsed["model"] = active_model
+                            parsed["timestamp_utc"] = now_iso
+                            return parsed
+                        elif resp.status_code == 429:
+                            if "limit: 0" in resp.text or "argon" in active_model.lower():
+                                logger.info(f"Model {active_model} quota limit is 0, switching immediately to fallback model...")
+                                last_err = f"Model {active_model} has limit 0"
+                                break
+                            backoff = 2 * (attempt + 1)
+                            logger.warning(f"Rate limited (429) on {active_model} for {self.agent_id}. Retrying in {backoff}s...")
+                            await asyncio.sleep(backoff)
+                            continue
+                        else:
+                            last_err = f"Gemini API ({active_model}) returned HTTP {resp.status_code}: {resp.text[:300]}"
+                            break
+                    except Exception as e:
+                        last_err = str(e)
+                        await asyncio.sleep(1)
             
-            if resp.status_code == 200:
-                data = resp.json()
-                candidate_text = data["candidates"][0]["content"]["parts"][0]["text"]
-                parsed = extract_json_from_llm_text(candidate_text)
-                parsed["agent_id"] = self.agent_id
-                parsed["agent_name"] = self.name
-                parsed["status"] = "COMPLETED"
-                parsed["gemini_connected"] = True
-                parsed["execution_mode"] = "GEMINI_API"
-                parsed["model"] = model
-                parsed["timestamp_utc"] = now_iso
-                return parsed
-            else:
-                err_msg = f"Gemini API returned HTTP {resp.status_code}: {resp.text[:300]}"
-                logger.error(f"Gemini API call failed for {self.agent_id}: {err_msg}")
-                return {
-                    "agent_id": self.agent_id,
-                    "agent_name": self.name,
-                    "status": "FAILED",
-                    "gemini_connected": True,
-                    "execution_mode": "FAILED",
-                    "error_message": err_msg,
-                    "timestamp_utc": now_iso,
-                    "findings": [],
-                    "recommendations": [],
-                    "disagreements_with_peers": [],
-                    "confidence_score": 0.0,
-                    "verdict_summary": f"Gemini API request failed (HTTP {resp.status_code})."
-                }
+            logger.error(f"Gemini API calls failed for {self.agent_id}: {last_err}")
+            return {
+                "agent_id": self.agent_id,
+                "agent_name": self.name,
+                "status": "FAILED",
+                "gemini_connected": True,
+                "execution_mode": "FAILED",
+                "error_message": last_err,
+                "timestamp_utc": now_iso,
+                "findings": [],
+                "recommendations": [],
+                "disagreements_with_peers": [],
+                "confidence_score": 0.0,
+                "verdict_summary": f"Gemini API request failed: {last_err}"
+            }
 
     def get_domain_reference(self) -> Dict[str, Any]:
         """Provides static domain reference documentation, clearly marked as REFERENCE ONLY."""

@@ -153,19 +153,14 @@ def test_final_deliverable():
     report = res.json()
     assert report["title"] == "FINAL RECOMMENDED MOSS WALL FORMULATION"
     assert "overall_winner" in report
+    assert report["overall_winner"]["code"] == "FORMULA_E"
+    assert report["overall_winner"]["total_material_cost_pkr_m2"] == 54.15
     winner_l1 = report["overall_winner"]["layer_1_summary"]
     assert "100.00% Mass Balance" in winner_l1
-    assert "14.0% OPC" in winner_l1
-    assert "14.0% RHA" in winner_l1
-    assert "8.0% GGBS" in winner_l1
-    assert "20.0% Crushed Brick" in winner_l1
-    assert "28.0% Sand" in winner_l1
-    assert "12.0% Marble Dust" in winner_l1
-    assert "1.5% MFC" in winner_l1
-    assert "1.0% Bone Ash" in winner_l1
-    assert "0.5% PP Fibre" in winner_l1
-    assert "0.5% Jute Fibre" in winner_l1
-    assert "0.5% HPMC" in winner_l1
+    assert "36.0% River Sand" in winner_l1
+    assert "28.0% Surkhi Brick" in winner_l1
+    assert "20.0% Marble Dust" in winner_l1
+    assert "6.0% OPC" in winner_l1
     
     # Check 100 kg batch dry ingredients sum to 100,000 g and 100.0%
     l1_items = report["layer_1_full_spec"]["ingredients"]
@@ -173,7 +168,7 @@ def test_final_deliverable():
     total_grams = sum(item["grams"] for item in l1_items)
     assert abs(total_pct - 100.0) < 1e-4
     assert total_grams == 100000
-    print("✓ Final deliverable report passed (Strict 100.00% mass balance verified)")
+    print("✓ Final deliverable report passed (Strict 100.00% mass balance and 54.15 PKR/m2 verified)")
 
 if __name__ == "__main__":
     print("\n--- RUNNING SABZAAR BACKEND SCIENTIFIC TEST SUITE ---")

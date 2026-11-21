@@ -413,7 +413,7 @@ FORMULA_D_LAYER_1: List[Dict[str, Any]] = [
         "name": "Crushed limestone rock flour (0.05–0.5 mm)",
         "category": "Mineral Filler",
         "color": "#E2E8F0",
-        "percentage": 16.0,
+        "percentage": 17.0,
         "function": "Quarry dust from aggregate crushers; stabilizes paste volume and increases spray density.",
         "cost_pkr_kg": 3.0,
         "notes": "Extremely economical byproduct."
@@ -516,6 +516,254 @@ FORMULA_D_LAYER_2: List[Dict[str, Any]] = [
     }
 ]
 
+# FORMULA E: SABZAAR ULTRA-LOW-COST DESI ECO-MATRIX (Target: PKR 50–60 / m²)
+# Designed specifically for existing concrete walls using zero expensive chemicals and 100% regional Pakistani recycled materials
+FORMULA_E_LAYER_1: List[Dict[str, Any]] = [
+    {
+        "id": "graded_ravi_river_sand",
+        "name": "Graded Ravi / Chenab River Sand (0.2–1.2 mm)",
+        "category": "Local Inert Skeleton",
+        "color": "#D1D5DB",
+        "percentage": 36.0,
+        "function": "Inert fine aggregate providing volume stability and shrinkage prevention.",
+        "cost_pkr_kg": 2.0,
+        "notes": "Locally quarried river sand across Punjab/Sindh."
+    },
+    {
+        "id": "recycled_crushed_surkhi",
+        "name": "Recycled Brick Surkhi / Kiln Reject Dust (0.2–2 mm)",
+        "category": "Construction Waste Pozzolan",
+        "color": "#B45309",
+        "percentage": 28.0,
+        "function": "Porous ceramic water reservoir and micro-rough anchor for moss rhizoids.",
+        "cost_pkr_kg": 3.5,
+        "porosity_pct": 32.0,
+        "notes": "Abundant demolition rubble and kiln rejects across Pakistan."
+    },
+    {
+        "id": "recycled_marble_slurry_e",
+        "name": "Waste Marble Sawing Slurry Powder (<63 µm)",
+        "category": "Industrial Waste Micro-filler",
+        "color": "#E5E7EB",
+        "percentage": 20.0,
+        "function": "Fine calcium carbonate filler improving trowel paste plasticity and adhesion to old concrete.",
+        "cost_pkr_kg": 1.5,
+        "notes": "Zero-cost industrial waste from Rawalpindi/KPK marble mills."
+    },
+    {
+        "id": "calcined_rice_husk_wood_ash",
+        "name": "Calcined Rice Husk & Tandoor Wood Ash",
+        "category": "Agricultural/Combustion Ash Pozzolan",
+        "color": "#4B5563",
+        "percentage": 7.0,
+        "function": "Reactive amorphous bio-silica & potassium donor; consumes free lime.",
+        "cost_pkr_kg": 3.0,
+        "notes": "Village tandoor and rice mill husk ash."
+    },
+    {
+        "id": "opc_activator_minimal",
+        "name": "Portland Cement (OPC 42.5 activator)",
+        "category": "Hydraulic Activator",
+        "color": "#9CA3AF",
+        "percentage": 6.0,
+        "function": "Minimal 6% binder required to achieve permanent adhesion to existing concrete walls.",
+        "cost_pkr_kg": 31.0,
+        "notes": "Kept strictly minimal to prevent high surface alkalinity."
+    },
+    {
+        "id": "chopped_boosa_straw",
+        "name": "Chopped Wheat / Rice Agricultural Straw (Boosa, 5–10 mm)",
+        "category": "Agricultural Fiber Reinforcement",
+        "color": "#F59E0B",
+        "percentage": 1.5,
+        "function": "Natural agricultural fiber preventing shrinkage cracking and creating capillary moisture veins.",
+        "cost_pkr_kg": 8.0,
+        "notes": "Everywhere available in Pakistani villages and cattle markets."
+    },
+    {
+        "id": "cooked_starch_powder",
+        "name": "Corn / Rice Starch Powder (Boiled Maize/Rice Flakes)",
+        "category": "Natural Bio-Polymer Binder",
+        "color": "#FDE68A",
+        "percentage": 1.5,
+        "function": "Natural polysaccharide cohesion agent replacing expensive synthetic HPMC.",
+        "cost_pkr_kg": 45.0,
+        "notes": "Standard food-grade starch or rice milling by-product."
+    }
+]
+
+FORMULA_E_LAYER_2: List[Dict[str, Any]] = [
+    {
+        "id": "fermented_rice_starch_water",
+        "name": "Fermented Leftover Rice/Potato Starch Water",
+        "category": "Carrier Medium",
+        "unit": "L",
+        "amount": 0.8,
+        "cost_pkr_per_unit": 0.0,
+        "function": "Zero-cost natural starchy liquid carrier from boiling rice/potatoes."
+    },
+    {
+        "id": "khatta_dahi_whey",
+        "name": "Strained Sour Curd Whey (Khatta Dahi Paani)",
+        "category": "Natural Lactic Acid Buffer & Tackifier",
+        "unit": "L",
+        "amount": 0.2,
+        "cost_pkr_per_unit": 10.0,
+        "function": "Natural lactic acid bacteria dropping surface pH to 5.5 and milk casein adhering moss."
+    },
+    {
+        "id": "salvaged_urban_brick_moss_e",
+        "name": "Salvaged Local Urban Wall Moss (Funaria, Barbula)",
+        "category": "Biological Propagules",
+        "unit": "g/L",
+        "amount": 25.0,
+        "cost_pkr_per_unit": 0.48,
+        "function": "Wild heat-hardened bryophyte propagules scraped from local brick walls."
+    },
+    {
+        "id": "natural_starch_thickener",
+        "name": "Boiled Rice/Maize Starch Slurry Gel",
+        "category": "Natural Bio-Gel Tackifier",
+        "unit": "g/L",
+        "amount": 5.0,
+        "cost_pkr_per_unit": 0.08,
+        "function": "Replaces sodium alginate with cooked starch viscosity."
+    },
+    {
+        "id": "sifted_wood_ash_micronutrient",
+        "name": "Sifted Wood Ash / Charcoal Leachate",
+        "category": "Natural Trace Micronutrients",
+        "unit": "g/L",
+        "amount": 2.0,
+        "cost_pkr_per_unit": 0.05,
+        "function": "Natural potassium, calcium, and phosphorus trace nutrients."
+    }
+]
+
+# FORMULA F: MIXED FOOD-WASTE BIOMASS FERMENT MATRIX (Target: PKR 50 / m²)
+# Explores utilization of domestic/restaurant kitchen food residues (calcined ash in Layer 1 + fermented starchy wash in Layer 2)
+FORMULA_F_LAYER_1: List[Dict[str, Any]] = [
+    {
+        "id": "graded_river_sand_f",
+        "name": "Graded River Sand (0.2–1.2 mm)",
+        "category": "Local Inert Skeleton",
+        "color": "#D1D5DB",
+        "percentage": 36.0,
+        "function": "Inert framework preventing shrinkage.",
+        "cost_pkr_kg": 2.0,
+        "notes": "Local river sand."
+    },
+    {
+        "id": "recycled_crushed_surkhi_f",
+        "name": "Recycled Crushed Brick Surkhi (0.2–2 mm)",
+        "category": "Demolition Waste Pozzolan",
+        "color": "#B45309",
+        "percentage": 26.0,
+        "function": "Ceramic capillary water storage matrix.",
+        "cost_pkr_kg": 3.5,
+        "porosity_pct": 32.0,
+        "notes": "Crushed brick rejects."
+    },
+    {
+        "id": "recycled_marble_slurry_f",
+        "name": "Recycled Marble Cutting Slurry (<63 µm)",
+        "category": "Industrial Waste Micro-filler",
+        "color": "#E5E7EB",
+        "percentage": 18.0,
+        "function": "Calcium carbonate fine filler.",
+        "cost_pkr_kg": 1.5,
+        "notes": "Marble sawing dust."
+    },
+    {
+        "id": "calcined_food_waste_ash",
+        "name": "Calcined Mixed Food-Waste Ash (Bone, Eggshell, Peel Char)",
+        "category": "Recycled Food-Waste Bio-Mineral Pozzolan",
+        "color": "#374151",
+        "percentage": 10.0,
+        "function": "Thermally converted mixed food waste: bio-calcite, phosphate, and bio-silica.",
+        "cost_pkr_kg": 1.0,
+        "notes": "Sun-dried and tandoor-calcined household kitchen scraps (zero chemical toxicity)."
+    },
+    {
+        "id": "opc_activator_f",
+        "name": "Portland Cement (OPC 42.5 activator)",
+        "category": "Hydraulic Activator",
+        "color": "#9CA3AF",
+        "percentage": 6.0,
+        "function": "Minimum chemical activator ensuring shear bond to existing concrete wall.",
+        "cost_pkr_kg": 31.0,
+        "notes": "Minimal 6% activator."
+    },
+    {
+        "id": "spent_tea_coffee_grounds",
+        "name": "Washed & Dried Spent Tea / Coffee Grounds",
+        "category": "Organic Food-Waste Micro-Fibre",
+        "color": "#78350F",
+        "percentage": 2.5,
+        "function": "Organic capillary drainage channels and mild lignin fiber reinforcement.",
+        "cost_pkr_kg": 1.0,
+        "notes": "Collected from tea stalls/cafes, rinsed and sun-dried."
+    },
+    {
+        "id": "cooked_starch_thickener_f",
+        "name": "Cooked Waste Starch Powder",
+        "category": "Natural Bio-Binder",
+        "color": "#FDE68A",
+        "percentage": 1.5,
+        "function": "Plasticity enhancer and anti-sag agent.",
+        "cost_pkr_kg": 45.0,
+        "notes": "Leftover dried boiled rice starch."
+    }
+]
+
+FORMULA_F_LAYER_2: List[Dict[str, Any]] = [
+    {
+        "id": "fermented_kitchen_starch_leachate",
+        "name": "Strained Boiled Kitchen Scrap Leachate (Potato/Rice/Lentil Water)",
+        "category": "Carrier Medium",
+        "unit": "L",
+        "amount": 0.8,
+        "cost_pkr_per_unit": 0.0,
+        "function": "Strained liquid from boiling leftover starchy food waste."
+    },
+    {
+        "id": "sour_milk_curd_whey_f",
+        "name": "Sour Milk / Curd Whey Ferment (Lactic Wash)",
+        "category": "Natural Lactic Acid Buffer & Bio-Gel Tackifier",
+        "unit": "L",
+        "amount": 0.2,
+        "cost_pkr_per_unit": 8.0,
+        "function": "Lactic acid drops surface concrete alkalinity and milk proteins adhere moss."
+    },
+    {
+        "id": "salvaged_urban_brick_moss_f",
+        "name": "Salvaged Wild Brick Moss (Funaria hygrometrica)",
+        "category": "Biological Propagules",
+        "unit": "g/L",
+        "amount": 25.0,
+        "cost_pkr_per_unit": 0.44,
+        "function": "Local heat-adapted bryophyte propagules."
+    },
+    {
+        "id": "micro_milled_eggshell_powder_f",
+        "name": "Micro-milled Eggshell Powder",
+        "category": "Recycled Bio-Calcite Inoculant Matrix",
+        "unit": "g/L",
+        "amount": 5.0,
+        "cost_pkr_per_unit": 0.10,
+        "function": "Bio-calcite nucleus promoting microbial crust formation."
+    },
+    {
+        "id": "vegetable_scrap_compost_tea",
+        "name": "Aerated Kitchen Peelings Compost Tea",
+        "category": "Natural Micronutrients",
+        "unit": "g/L",
+        "amount": 2.0,
+        "cost_pkr_per_unit": 0.25,
+        "function": "Mild organic trace minerals from vegetable scrap steep."
+    }
+]
+
 ALL_FORMULA_CATEGORIES: Dict[str, Dict[str, Any]] = {
     "FORMULA_A": FORMULA_A_DOCUMENTATION,
     "FORMULA_B": {
@@ -577,5 +825,46 @@ ALL_FORMULA_CATEGORIES: Dict[str, Dict[str, Any]] = {
             "spray_rate_l_m2": 1.5,
             "moss_density_g_m2": 37.5
         }
+    },
+    "FORMULA_E": {
+        "code": "FORMULA-E",
+        "name": "Sabzaar Desi Eco-Matrix (Target: PKR 50–60 / m²)",
+        "status": "DISCOVERY_CANDIDATE",
+        "category": "Ultra-Low-Cost Recycled Desi Matrix",
+        "description": "Engineered specifically for existing concrete walls using 100% regional Pakistani recycled materials (Surkhi, river sand, marble slurry, boosa straw, and fermented starch-whey spray). Zero expensive chemicals.",
+        "layer_1": {
+            "name": "Desi Recycled Concrete-Retrofit Coat",
+            "ingredients": FORMULA_E_LAYER_1,
+            "mass_balance_sum_pct": sum(item["percentage"] for item in FORMULA_E_LAYER_1),
+            "estimated_initial_ph": 11.0,
+            "wait_days_to_spray": 10
+        },
+        "layer_2": {
+            "name": "Fermented Starch-Whey Desi Moss Spray",
+            "ingredients": FORMULA_E_LAYER_2,
+            "spray_rate_l_m2": 1.2,
+            "moss_density_g_m2": 30.0
+        }
+    },
+    "FORMULA_F": {
+        "code": "FORMULA-F",
+        "name": "Mixed Food-Waste Biomass Ferment Matrix",
+        "status": "DISCOVERY_CANDIDATE",
+        "category": "Food Waste Circular Bio-System",
+        "description": "Utilizes calcined mixed kitchen food-waste ash (bone, eggshell, peel char) and dried spent tea grounds in Layer 1, paired with fermented starchy leachate and sour milk whey in Layer 2. Cost: ~PKR 50 / m².",
+        "layer_1": {
+            "name": "Food-Waste Ash Bioreceptive Coat",
+            "ingredients": FORMULA_F_LAYER_1,
+            "mass_balance_sum_pct": sum(item["percentage"] for item in FORMULA_F_LAYER_1),
+            "estimated_initial_ph": 10.8,
+            "wait_days_to_spray": 8
+        },
+        "layer_2": {
+            "name": "Fermented Kitchen Scrap Bio-Broth Spray",
+            "ingredients": FORMULA_F_LAYER_2,
+            "spray_rate_l_m2": 1.2,
+            "moss_density_g_m2": 30.0
+        }
     }
 }
+

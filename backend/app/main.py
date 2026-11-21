@@ -57,6 +57,7 @@ init_db()
 @app.on_event("startup")
 def on_startup():
     init_db()
+    master_orchestrator.load_latest_cycle()
 
 # ==================== HEALTH & OVERVIEW ====================
 
@@ -104,7 +105,7 @@ def get_system_overview():
     return {
         "master_prompt_active": True,
         "total_formulas": len(formulas),
-        "formula_categories": ["FORMULA_A", "FORMULA_B", "FORMULA_C", "FORMULA_D"],
+        "formula_categories": ["FORMULA_A", "FORMULA_B", "FORMULA_C", "FORMULA_D", "FORMULA_E", "FORMULA_F"],
         "total_specialist_agents": len(ALL_SPECIALIST_AGENTS),
         "simulation_scenarios_available": len(AVAILABLE_SCENARIOS),
         "manufacturing_process_stages": len(PROCESS_STAGES_METADATA),
@@ -119,7 +120,7 @@ def get_master_prompt():
     return {
         "master_prompt": master_orchestrator.master_prompt,
         "is_orchestrator_running": master_orchestrator.is_running,
-        "categories_coordinated": ["FORMULA_A", "FORMULA_B", "FORMULA_C", "FORMULA_D"]
+        "categories_coordinated": ["FORMULA_A", "FORMULA_B", "FORMULA_C", "FORMULA_D", "FORMULA_E", "FORMULA_F"]
     }
 
 # ==================== FORMULA MANAGEMENT & EDITOR ====================
@@ -351,7 +352,7 @@ def get_agent_report(agent_id: str):
     return agent.last_report
 
 class RunAgentCycleRequest(BaseModel):
-    formula_category: str = "FORMULA_A"
+    formula_category: str = "FORMULA_E"
     api_key: Optional[str] = None
 
 @app.post("/api/agents/run-cycle")
@@ -361,6 +362,162 @@ async def run_agents_cycle(payload: RunAgentCycleRequest):
         api_key=payload.api_key
     )
     return result
+
+@app.get("/api/agents/latest-cycle")
+def get_latest_agent_cycle():
+    cycle = master_orchestrator.load_latest_cycle()
+    if not cycle and master_orchestrator.execution_history:
+        cycle = master_orchestrator.execution_history[-1]
+    return cycle or {"status": "NO_CYCLE_RUN_YET"}
+
+class WasteScanRequest(BaseModel):
+    material_name: str
+    origin_context: Optional[str] = "Pakistan industrial or agricultural byproduct"
+
+@app.post("/api/agents/scan-waste-material")
+async def scan_waste_material(payload: WasteScanRequest):
+    """
+    Scans published scientific literature and chemical databases for untested local waste products
+    using Gemini API to determine toxic contaminants, heavy metals, pozzolanic activity, and moss biocompatibility.
+    """
+    key = settings.GEMINI_API_KEY
+    if not key or len(key.strip()) < 5:
+        raise HTTPException(status_code=400, detail="Gemini API key is not configured in .env.")
+    
+    import httpx
+    import json
+    from .agents.base import extract_json_from_llm_text
+
+    prompt = f"""
+You are the Chief Chemical Materials Scientist and Toxicologist at Sabzaar Living Walls Research Laboratory.
+Task: Deep scientific literature scan for an exotic or untested local waste material for use in bioreceptive concrete and living moss walls in Pakistan.
+
+Candidate Material: "{payload.material_name}"
+Local Origin Context: "{payload.origin_context}"
+
+Scan chemical literature, patent disclosures, and environmental toxicology studies. Evaluate:
+1. Primary chemical and mineral composition (crystalline phases, amorphous content, organics).
+2. Toxic heavy metals or deleterious chemical compounds (e.g. Lead, hexavalent Chromium, Cadmium, synthetic azo dyes, sulfides, phenols, excessive salts).
+3. Pozzolanic reactivity index / hydraulic binding capability when blended with cement/lime.
+4. Biocompatibility with bryophytes (moss protonema and gametophytes).
+5. Pre-treatment required (calcination, water washing, fermentation, charring).
+6. Living wall feasibility score (0 to 100).
+7. Realistic acquisition cost in Pakistan (PKR / kg).
+
+You MUST respond strictly with a valid JSON object matching this schema:
+{{
+  "material_name": "{payload.material_name}",
+  "origin_context": "{payload.origin_context}",
+  "chemical_composition": ["phase or compound 1", "phase 2"],
+  "heavy_metals_and_toxins": [
+    {{"contaminant": "name", "risk_level": "HIGH|MEDIUM|LOW|NEGLIGIBLE", "mechanism": "toxicity details"}}
+  ],
+  "pozzolanic_and_structural_assessment": "detailed analysis of cementitious or aggregate behaviour",
+  "bryophyte_biocompatibility": "COMPATIBLE|CONDITIONAL|LETHAL_TOXIC",
+  "mandatory_pretreatment_protocol": ["step 1", "step 2"],
+  "living_wall_suitability_score": 85.0,
+  "estimated_pakistan_cost_pkr_kg": 4.5,
+  "verdict_and_recommendation": "comprehensive scientific synthesis and recommendation paragraph",
+  "academic_citations": ["relevant literature or ASTM standard"]
+}}
+"""
+    models_to_try = [settings.GEMINI_MODEL, "gemini-flash-lite-latest", "gemini-flash-latest"]
+    async with httpx.AsyncClient(timeout=60.0) as client:
+        last_err = ""
+        for model in models_to_try:
+            url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={key}"
+            req_body = {
+                "contents": [{"parts": [{"text": prompt}]}],
+                "generationConfig": {"responseMimeType": "application/json", "temperature": 0.2}
+            }
+            try:
+                resp = await client.post(url, json=req_body)
+                if resp.status_code == 200:
+                    cand = resp.json()["candidates"][0]["content"]["parts"][0]["text"]
+                    parsed = extract_json_from_llm_text(cand)
+                    parsed["scanned_model"] = model
+                    return parsed
+                else:
+                    last_err = f"Gemini error {resp.status_code}: {resp.text[:200]}"
+            except Exception as e:
+                last_err = str(e)
+        raise HTTPException(status_code=500, detail=f"Exotic waste scan failed: {last_err}")
+
+class LivePaperRequest(BaseModel):
+    formula_category: Optional[str] = "FORMULA_E"
+
+@app.post("/api/reports/generate-live-paper")
+async def generate_live_paper(payload: LivePaperRequest):
+    """
+    Generates a full peer-reviewed caliber research paper dynamically via Gemini API,
+    synthesizing materials chemistry, Pakistan climate data, and the 13-agent consensus.
+    """
+    key = settings.GEMINI_API_KEY
+    if not key or len(key.strip()) < 5:
+        raise HTTPException(status_code=400, detail="Gemini API key is not configured in .env.")
+    
+    import httpx
+    import json
+    from .agents.base import extract_json_from_llm_text
+
+    cat = payload.formula_category or "FORMULA_E"
+    fdata = ALL_FORMULA_CATEGORIES.get(cat, ALL_FORMULA_CATEGORIES["FORMULA_E"])
+
+    prompt = f"""
+You are the Lead Scientific Author at Sabzaar Living Walls Research Laboratory.
+Task: Write a rigorous, authoritative academic research paper on the breakthrough formula:
+Formula Code: {cat}
+Formula Name: {fdata.get('name')}
+Target Microclimate: Islamabad & Lahore, Pakistan (Subtropical Cwa/BSh, 45°C extreme summer, monsoon cycles).
+Target Substrate: Existing, already-built concrete infrastructure.
+Achieved Target Cost: PKR 54.15 / m² (100% recyclable, non-chemical regional Pakistani materials).
+
+Structure your dynamic prose paper to be publication-ready for 'Construction and Building Materials' or 'Ecological Engineering'.
+Include:
+1. Title
+2. Abstract (200 words, quantitative findings)
+3. 1. Introduction (Urban heat island in Pakistan, concrete alkalinity barrier, limitations of imported 800 PKR systems)
+4. 2. Two-Layer Bioreceptive System Architecture (Layer 1 Mineral Render + Layer 2 Living Spray)
+5. 3. Stoichiometric Mass Balance & Pozzolanic Lime-Scavenging Kinetics
+6. 4. Microclimate Hydrological Trajectory & Penman-Monteith Evaporative Resistance
+7. 5. Multi-Agent Red-Team Critique & Adversarial Resolution (Thermal stress at 45°C, ASTM C1583 shear bond >=0.75 MPa)
+8. 6. Circular Economy & Life-Cycle Cost Analysis (PKR 54.15 / m² breakdown vs 816 PKR baseline)
+9. 7. Conclusion & Field Implementation Test Gates
+
+Respond strictly with a valid JSON object:
+{{
+  "title": "full formal title",
+  "abstract": "abstract text",
+  "introduction": "introduction text",
+  "materials_and_architecture": "methodology text",
+  "pozzolanic_and_microclimate_results": "results and discussion text",
+  "red_team_adversarial_resolution": "synthesis of critical review",
+  "life_cycle_economics": "cost and carbon analysis text",
+  "conclusion": "conclusion text",
+  "references": ["citation 1", "citation 2", "citation 3"]
+}}
+"""
+    models_to_try = [settings.GEMINI_MODEL, "gemini-flash-lite-latest", "gemini-flash-latest"]
+    async with httpx.AsyncClient(timeout=90.0) as client:
+        last_err = ""
+        for model in models_to_try:
+            url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={key}"
+            req_body = {
+                "contents": [{"parts": [{"text": prompt}]}],
+                "generationConfig": {"responseMimeType": "application/json", "temperature": 0.3}
+            }
+            try:
+                resp = await client.post(url, json=req_body)
+                if resp.status_code == 200:
+                    cand = resp.json()["candidates"][0]["content"]["parts"][0]["text"]
+                    parsed = extract_json_from_llm_text(cand)
+                    parsed["model"] = model
+                    return parsed
+                else:
+                    last_err = f"Gemini error {resp.status_code}: {resp.text[:200]}"
+            except Exception as e:
+                last_err = str(e)
+        raise HTTPException(status_code=500, detail=f"Paper generation failed: {last_err}")
 
 # ==================== MULTI-OBJECTIVE OPTIMIZATION ====================
 
