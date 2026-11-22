@@ -35,6 +35,7 @@ from .optimization.pareto import (
     get_scientific_score_audit
 )
 from .reports.generator import generate_final_recommended_report, get_markdown_final_deliverable
+from .simulation.rawalpindi_minimum_coating import evaluate_rawalpindi_minimum_coating
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
@@ -648,6 +649,34 @@ def get_final_deliverable():
 @app.get("/api/reports/final-deliverable/markdown")
 def get_final_deliverable_markdown():
     return {"markdown": get_markdown_final_deliverable()}
+
+# ==================== RAWALPINDI MINIMUM COATING RESEARCH BRIEF ====================
+
+@app.get("/api/rawalpindi/minimum-coating-evaluation")
+def get_rawalpindi_minimum_coating_evaluation(
+    water_volume_ml: float = Query(100.0, description="Carrier water volume per test batch (mL)"),
+    fresh_moss_g: float = Query(2.0, description="Fresh blotted local moss mass per batch (g)"),
+    rice_starch_g: float = Query(0.5, description="Dry rice starch mass per batch (g)"),
+    test_area_m2: float = Query(0.10, description="Test block surface area (m²)"),
+    misting_interval_h: float = Query(24.0, description="Misting interval in hours"),
+    peak_temp_c: float = Query(42.0, description="Summer peak ambient temperature (°C)"),
+    ambient_rh: float = Query(28.0, description="Ambient relative humidity (%)"),
+    wind_m_s: float = Query(2.5, description="Ambient wind speed (m/s)")
+):
+    """
+    Evaluates Candidate 1 (Water-Only) vs Candidate 2 (Single-Starch) vs Formula E
+    vs PWD WeatherShield Paint on weathered Rawalpindi concrete.
+    """
+    return evaluate_rawalpindi_minimum_coating(
+        water_volume_ml_batch=water_volume_ml,
+        fresh_moss_mass_g_batch=fresh_moss_g,
+        rice_starch_dry_g_batch=rice_starch_g,
+        test_block_area_m2=test_area_m2,
+        misting_interval_hours=misting_interval_h,
+        summer_peak_temp_c=peak_temp_c,
+        ambient_rh_pct=ambient_rh,
+        wind_speed_m_s=wind_m_s
+    )
 
 # ==================== STATIC FRONTEND MOUNT ====================
 from fastapi.staticfiles import StaticFiles

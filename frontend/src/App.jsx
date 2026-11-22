@@ -29,6 +29,7 @@ import {
 
 import * as api from "./api";
 import DualSprayDashboard from "./DualSprayDashboard";
+import RawalpindiMinimumCoating from "./RawalpindiMinimumCoating";
 
 export default function App() {
   const [activeTab, setActiveTab] = useState("overview");
@@ -443,9 +444,10 @@ export default function App() {
           <nav className="sz-nav">
             {[
               { id: "overview", label: "Research Overview", icon: Activity },
+              { id: "rawalpindi", label: "Rawalpindi Direct-Concrete Brief", icon: ShieldAlert },
               { id: "dual_spray", label: "Dual-Spray Simulation Suite", icon: Droplets },
               { id: "prompt", label: "Master Research Prompt", icon: Compass },
-              { id: "discovery", label: "Formula Discovery (A-F)", icon: Layers },
+              { id: "discovery", label: "Formula Discovery (A-H)", icon: Layers },
               { id: "editor", label: "Interactive Formula Editor", icon: Sliders },
               { id: "simulation", label: "Formula Simulation", icon: BarChart3 },
               { id: "processes", label: "Process Discovery", icon: RefreshCw },
@@ -763,6 +765,9 @@ export default function App() {
                 </div>
               </div>
             )}
+
+        {/* TAB: RAWALPINDI MINIMUM COATING RESEARCH BRIEF */}
+        {activeTab === "rawalpindi" && <RawalpindiMinimumCoating />}
 
         {/* TAB 2: DUAL-SPRAY COMPREHENSIVE SIMULATION SUITE */}
         {activeTab === "dual_spray" && <DualSprayDashboard />}

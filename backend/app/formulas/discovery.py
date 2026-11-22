@@ -764,6 +764,89 @@ FORMULA_F_LAYER_2: List[Dict[str, Any]] = [
     }
 ]
 
+# FORMULA G: CANDIDATE 1 (RAWALPINDI WATER-ONLY DIRECT-TO-CONCRETE)
+FORMULA_G_LAYER_1: List[Dict[str, Any]] = [
+    {
+        "id": "existing_weathered_concrete_g",
+        "name": "Existing Weathered Concrete Substrate (M20/M25 Sound Surface)",
+        "category": "In-situ Concrete Matrix",
+        "color": "#94A3B8",
+        "percentage": 100.0,
+        "function": "Existing rough carbonated concrete wall (pH 8.2–8.7); eliminates new mineral render coat entirely.",
+        "cost_pkr_kg": 0.0,
+        "porosity_pct": 8.0,
+        "ph_initial": 8.5,
+        "notes": "Direct-to-concrete system: zero new cementitious plaster applied."
+    }
+]
+
+FORMULA_G_LAYER_2: List[Dict[str, Any]] = [
+    {
+        "id": "water_carrier_only",
+        "name": "Clean Tap/Rain Water (Carrier)",
+        "category": "Liquid Carrier",
+        "unit": "L",
+        "amount": 1.0,
+        "cost_pkr_per_unit": 0.05,
+        "function": "Hydraulic dispersant for moss fragments."
+    },
+    {
+        "id": "traceable_local_moss_g",
+        "name": "Fresh Traceable Local Wall Moss (Blotted Fresh Weight)",
+        "category": "Living Bryophyte Tissue",
+        "unit": "g/L",
+        "amount": 20.0,
+        "cost_pkr_per_unit": 2.25,
+        "function": "Local acclimatized vegetative propagules."
+    }
+]
+
+# FORMULA H: CANDIDATE 2 (RAWALPINDI SINGLE-STARCH DIRECT-TO-CONCRETE)
+FORMULA_H_LAYER_1: List[Dict[str, Any]] = [
+    {
+        "id": "existing_weathered_concrete_h",
+        "name": "Existing Weathered Concrete Substrate (M20/M25 Sound Surface)",
+        "category": "In-situ Concrete Matrix",
+        "color": "#94A3B8",
+        "percentage": 100.0,
+        "function": "Existing rough carbonated concrete wall (pH 8.2–8.7); eliminates new mineral render coat entirely.",
+        "cost_pkr_kg": 0.0,
+        "porosity_pct": 8.0,
+        "ph_initial": 8.5,
+        "notes": "Direct-to-concrete system: zero new cementitious plaster applied."
+    }
+]
+
+FORMULA_H_LAYER_2: List[Dict[str, Any]] = [
+    {
+        "id": "water_carrier_h",
+        "name": "Clean Water (Cooked Gel Carrier)",
+        "category": "Liquid Carrier",
+        "unit": "L",
+        "amount": 1.0,
+        "cost_pkr_per_unit": 0.05,
+        "function": "Hydraulic carrier with cooked starch."
+    },
+    {
+        "id": "plain_rice_starch_tackifier",
+        "name": "Cooked Plain Rice Starch (Dry-mass basis)",
+        "category": "Temporary Vertical Tackifier",
+        "unit": "g/L",
+        "amount": 5.0,
+        "cost_pkr_per_unit": 0.16,
+        "function": "Temporary amylose/amylopectin adhesion gel for vertical retention until rhizoid attachment."
+    },
+    {
+        "id": "traceable_local_moss_h",
+        "name": "Fresh Traceable Local Wall Moss (Blotted Fresh Weight)",
+        "category": "Living Bryophyte Tissue",
+        "unit": "g/L",
+        "amount": 20.0,
+        "cost_pkr_per_unit": 2.25,
+        "function": "Local acclimatized vegetative propagules."
+    }
+]
+
 ALL_FORMULA_CATEGORIES: Dict[str, Dict[str, Any]] = {
     "FORMULA_A": FORMULA_A_DOCUMENTATION,
     "FORMULA_B": {
@@ -870,6 +953,58 @@ ALL_FORMULA_CATEGORIES: Dict[str, Dict[str, Any]] = {
             "ingredients": FORMULA_F_LAYER_2,
             "spray_rate_l_m2": 1.2,
             "moss_density_g_m2": 30.0
+        }
+    },
+    "FORMULA_G": {
+        "code": "FORMULA-G",
+        "name": "Candidate 1: Water-Only Direct-to-Concrete (Rawalpindi Brief)",
+        "status": "DISCOVERY_CANDIDATE",
+        "category": "Direct-to-Concrete Minimal Coating",
+        "description": "Zero new mineral render. 100 mL clean water + 2 g fresh traceable local moss per 0.10 m² (1.0 L/m² + 20.0 g/m²). Direct onto sound weathered concrete.",
+        "layer_1": {
+            "name": "Existing Weathered Concrete Substrate (M20/M25)",
+            "form": "Weathered Concrete Wall (Unrendered)",
+            "application_method": "Pre-wetting only (Zero mortar application)",
+            "nominal_thickness_mm": 0.0,
+            "wet_spray_slurry_rate_l_m2": 0.0,
+            "ingredients": FORMULA_G_LAYER_1,
+            "mass_balance_sum_pct": sum(item["percentage"] for item in FORMULA_G_LAYER_1),
+            "estimated_initial_ph": 8.5,
+            "wait_days_to_spray": 0
+        },
+        "layer_2": {
+            "name": "Water-Only Moss Fragment Suspension",
+            "form": "Aqueous Suspension Spray",
+            "application_method": "Single-pass low-pressure spray / manual wash",
+            "ingredients": FORMULA_G_LAYER_2,
+            "spray_rate_l_m2": 1.0,
+            "moss_density_g_m2": 20.0
+        }
+    },
+    "FORMULA_H": {
+        "code": "FORMULA-H",
+        "name": "Candidate 2: Single-Starch Direct-to-Concrete (Rawalpindi Brief)",
+        "status": "DISCOVERY_CANDIDATE",
+        "category": "Direct-to-Concrete Minimal Coating",
+        "description": "Zero new mineral render. 100 mL water + 0.5 g cooked rice starch + 2 g fresh moss per 0.10 m² (1.0 L/m² + 5.0 g/m² starch + 20.0 g/m² moss). Starch serves solely for initial vertical face retention.",
+        "layer_1": {
+            "name": "Existing Weathered Concrete Substrate (M20/M25)",
+            "form": "Weathered Concrete Wall (Unrendered)",
+            "application_method": "Pre-wetting only (Zero mortar application)",
+            "nominal_thickness_mm": 0.0,
+            "wet_spray_slurry_rate_l_m2": 0.0,
+            "ingredients": FORMULA_H_LAYER_1,
+            "mass_balance_sum_pct": sum(item["percentage"] for item in FORMULA_H_LAYER_1),
+            "estimated_initial_ph": 8.5,
+            "wait_days_to_spray": 0
+        },
+        "layer_2": {
+            "name": "Single-Starch Moss Carrier Spray",
+            "form": "Cooked Starch Moss Slurry Spray",
+            "application_method": "Wide-orifice spray (4–6 mm tip) or manual brush coat",
+            "ingredients": FORMULA_H_LAYER_2,
+            "spray_rate_l_m2": 1.0,
+            "moss_density_g_m2": 20.0
         }
     }
 }

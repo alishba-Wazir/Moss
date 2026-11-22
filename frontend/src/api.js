@@ -225,3 +225,9 @@ export async function fetchDualSprayDashboard() {
   const res = await fetch(`${API_BASE}/dual-spray/comparison-dashboard`);
   return res.json();
 }
+
+export async function fetchRawalpindiEvaluation(params = {}) {
+  const query = new URLSearchParams(params).toString();
+  const res = await fetch(`${API_BASE}/rawalpindi/minimum-coating-evaluation${query ? `?${query}` : ''}`);
+  return res.json();
+}
